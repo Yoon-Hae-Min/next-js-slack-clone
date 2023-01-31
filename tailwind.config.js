@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        focusInput: 'shadow-[0_0_0_1px_rgba(29,155,209,1),0_0_0_5px_rgba(29,155,209,0.3)]',
+        focusInput: '0 0 0 1px rgba(29,155,209,1), 0 0 0 5px rgba(29,155,209,0.3)',
       },
     },
   },
