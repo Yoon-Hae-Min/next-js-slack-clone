@@ -1,4 +1,6 @@
-const AuthorizationInput = ({ ...props }) => {
+import { InputHTMLAttributes, FC } from 'react';
+
+const AuthorizationInput: FC<InputHTMLAttributes<HTMLInputElement>> = ({ ...props }) => {
   return (
     <input
       className="mb-5 box-border h-11 w-full rounded 
