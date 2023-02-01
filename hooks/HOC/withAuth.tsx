@@ -1,15 +1,8 @@
 import api from 'apis/axios';
+import { userFetcher } from 'apis/user';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect } from 'react';
 import useSWR from 'swr';
-
-const userFetcher = (url: string) => {
-  return api
-    .get(url, {
-      withCredentials: true,
-    })
-    .then((data) => data.data);
-};
 
 const withAuth = (WrappedComponent: FC) => {
   const Component = (props: any) => {
