@@ -22,7 +22,8 @@ const SignIn = () => {
         { email: email, password: password },
         {
           onSuccess: (data) => {
-            router.push('/workspace/slack/channel/일반');
+            router.push('/workspace');
+            ///workspace/slack/channel/일반
           },
           onError: (err) => {
             setSignInError(true);
