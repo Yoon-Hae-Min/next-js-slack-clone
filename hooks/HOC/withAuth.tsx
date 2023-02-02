@@ -10,7 +10,7 @@ const withAuth = (WrappedComponent: FC) => {
     const { data } = useSWR('/api/users', userFetcher);
     console.log(data);
     useEffect(() => {
-      if (data && !data) {
+      if (data !== undefined && !data) {
         router.replace('/signin');
       }
     }, [data, router]);
