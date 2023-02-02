@@ -21,7 +21,7 @@
       "@layouts/*": ["layouts/*"],
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
-      "@typings": ["typings/*"]
+      "@types": ["types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

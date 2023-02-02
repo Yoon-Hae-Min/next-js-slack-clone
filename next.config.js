@@ -20,7 +20,7 @@ module.exports = {
         '@layouts/*': path.resolve(__dirname, '/layouts'),
         '@pages/*': path.resolve(__dirname, '/pages'),
         '@utils/*': path.resolve(__dirname, '/utils'),
-        '@typings': path.resolve(__dirname, '/typings'),
+        '@types': path.resolve(__dirname, '/types'),
       },
       ...config.resolve,
     };
