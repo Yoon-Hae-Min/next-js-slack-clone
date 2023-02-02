@@ -4,6 +4,14 @@ const path = require('path');
 
 module.exports = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.gravatar.com',
+      },
+    ],
+  },
   webpack: (config, { webpack }) => {
     config.resolve = {
       alias: {
