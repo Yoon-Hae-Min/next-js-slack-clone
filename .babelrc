@@ -11,7 +11,7 @@
           "@layouts/*": "./layouts",
           "@pages/*": "./pages",
           "@utils/*": "./utils",
-          "@types": "./types"
+          "@types/*": "./types"
         }
       }
     ]
