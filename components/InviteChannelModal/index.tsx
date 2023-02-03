@@ -6,8 +6,9 @@ import React, { FC, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
 import { userFetcher } from 'apis/user';
-import AuthorizationInput from '@components/AuthorizationInput';
+import Input from '@components/Input';
 import { useRouter } from 'next/router';
+import Button from '@components/Button';
 
 interface Props {
   show: boolean;
@@ -17,7 +18,6 @@ interface Props {
 const InviteChannelModal: FC<Props> = ({ show, onCloseModal, setShowInviteChannelModal }) => {
   const router = useRouter();
   const { workspace, channel } = router.query;
-  console.log(workspace, channel);
   const [newMember, onChangeNewMember, setNewMember] = useInput('');
   const { data: userData } = useSWR<IUser>('/api/users', userFetcher);
   const { mutate: mutateMembers } = useSWR<IUser[]>(
@@ -51,22 +51,10 @@ const InviteChannelModal: FC<Props> = ({ show, onCloseModal, setShowInviteChanne
   return (
     <Modal show={show} onCloseModal={onCloseModal}>
       <form onSubmit={onInviteMember}>
-        <label className="block cursor-pointer pb-1 text-left text-sm font-bold">
-          <span>채널 멤버 초대</span>
-          <AuthorizationInput id="member" value={newMember} onChange={onChangeNewMember} />
-        </label>
-        <button
-          className="shadow-[0_1px_4px_rgba(0, 0, 0, 0.3)] my-3
-          h-11 w-full max-w-full cursor-pointer rounded bg-[#4a154b]
-          text-lg font-bold text-white 
-          transition-all duration-75 ease-linear
-          hover:bg-[rgba(74,21,75,0.9)]
-          focus:shadow-[0_0_0_5px_rgba(18,100,163,1),0_0_0_5px_rgba(29,155,209,0.3)]
-          "
-          type="submit"
-        >
-          초대하기
-        </button>
+        <Input.wrapper title="채널 맴버 초대">
+          <Input id="member" value={newMember} onChange={onChangeNewMember} />
+        </Input.wrapper>
+        <Button type="submit">초대하기</Button>
       </form>
     </Modal>
   );

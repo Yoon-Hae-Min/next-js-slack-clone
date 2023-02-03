@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { IUser } from 'types/db';
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
-import AuthorizationInput from '@components/AuthorizationInput';
+import Input from '@components/Input';
 import { ToastContainer, toast } from 'react-toastify';
 import CreateChannelModal from '@components/CreateChannelModal';
 import InviteChannelModal from '@components/InviteChannelModal';
@@ -198,11 +198,11 @@ const Workspace = ({ children }: PropsWithChildren) => {
         <form onSubmit={onCreateWorkspace}>
           <label className="mb-4">
             <span className="block cursor-pointer pb-2 text-left font-bold">워크스페이스 이름</span>
-            <AuthorizationInput value={newWorkspace} onChange={handleNewWorkspace} />
+            <Input value={newWorkspace} onChange={handleNewWorkspace} />
           </label>
           <label className="mb-4">
             <span className="block cursor-pointer pb-2 text-left font-bold">워크스페이스 url</span>
-            <AuthorizationInput value={newUrl} onChange={handleNewUrl} />
+            <Input value={newUrl} onChange={handleNewUrl} />
           </label>
           <button
             className="shadow-[0_1px_4px_rgba(0, 0, 0, 0.3)] my-3

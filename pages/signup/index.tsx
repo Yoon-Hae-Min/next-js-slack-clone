@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, InputHTMLAttributes, useCallback, useState } from 'react';
 import Link from 'next/link';
-import AuthorizationInput from '@components/AuthorizationInput';
+import Input from '@components/Input';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
 import { signUpRequest } from 'apis/signup';
@@ -61,25 +61,25 @@ const SignUp = () => {
         <label id="email-label" className="block cursor-pointer pb-1 text-left text-sm font-bold">
           <span className="mb-1 block">이메일 주소</span>
           <div>
-            <AuthorizationInput type="email" id="email" name="email" value={email} onChange={handleEmail} />
+            <Input type="email" id="email" name="email" value={email} onChange={handleEmail} />
           </div>
         </label>
         <label id="password-label" className="block cursor-pointer pb-1 text-left text-sm font-bold">
           <span className="mb-1 block">닉네임</span>
           <div>
-            <AuthorizationInput type="text" id="nickname" name="nickname" value={nickname} onChange={handleNickname} />
+            <Input type="text" id="nickname" name="nickname" value={nickname} onChange={handleNickname} />
           </div>
         </label>
         <label id="password-label" className="block cursor-pointer pb-1 text-left text-sm font-bold">
           <span className="mb-1 block">비밀번호</span>
           <div>
-            <AuthorizationInput type="password" id="password" name="password" onChange={onChangePassword} />
+            <Input type="password" id="password" name="password" onChange={onChangePassword} />
           </div>
         </label>
         <label id="passwordValidate-label" className="block cursor-pointer pb-1 text-left text-sm font-bold">
           <span className="mb-1 block">비밀번호 확인</span>
           <div>
-            <AuthorizationInput type="password" id="password" name="password" onChange={onChangePasswordValidation} />
+            <Input type="password" id="password" name="password" onChange={onChangePasswordValidation} />
           </div>
           {missMathError && <div className="mt-3 mb-2 font-bold text-[#e01e5a]">비밀번호가 일치하지 않습니다.</div>}
           {!nickname && <div className="mt-3 mb-2 font-bold text-[#e01e5a]">닉네임을 입력해 주세요.</div>}
