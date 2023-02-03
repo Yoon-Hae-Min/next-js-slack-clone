@@ -1,6 +1,6 @@
-import api from './axios';
+import api from 'apis/axios';
 
-export const userFetcher = (url: string) => {
+export const fetcher = (url: string) => {
   return api
     .get(url, {
       withCredentials: true,

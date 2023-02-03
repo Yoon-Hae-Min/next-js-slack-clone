@@ -1,10 +1,10 @@
 import React, { FormEvent, useCallback, useState } from 'react';
 import Link from 'next/link';
-import AuthorizationInput from '@components/AuthorizationInput';
+import Input from '@components/Input';
 import { useRouter } from 'next/router';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
-import { signInRequest } from 'apis/signin';
+import { signInRequest } from 'apis/auth';
 
 const SignIn = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const SignIn = () => {
         { email: email, password: password },
         {
           onSuccess: (data) => {
-            router.push('/workspace');
+            router.push('/channel');
             ///workspace/slack/channel/일반
           },
           onError: (err) => {
@@ -41,13 +41,13 @@ const SignIn = () => {
         <label id="email-label" className="block cursor-pointer pb-1 text-left text-sm font-bold">
           <span className="mb-1 block">이메일 주소</span>
           <div>
-            <AuthorizationInput type="email" id="email" name="email" value={email} onChange={handleEmail} />
+            <Input type="email" id="email" name="email" value={email} onChange={handleEmail} />
           </div>
         </label>
         <label id="password-label" className="block cursor-pointer pb-1 text-left text-sm font-bold">
           <span className="mb-1 block">비밀번호</span>
           <div>
-            <AuthorizationInput type="password" id="password" name="password" value={password} onChange={setPassword} />
+            <Input type="password" id="password" name="password" value={password} onChange={setPassword} />
           </div>
           {signInError && (
             <div className="mt-3 mb-2 font-bold text-[#e01e5a]">이메일과 비밀번호 조합이 일치하지 않습니다.</div>

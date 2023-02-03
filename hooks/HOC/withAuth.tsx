@@ -1,5 +1,5 @@
 import api from 'apis/axios';
-import { userFetcher } from 'apis/user';
+import { fetcher } from '@utils/fetcher';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect } from 'react';
 import useSWR from 'swr';
@@ -7,10 +7,10 @@ import useSWR from 'swr';
 const withAuth = (WrappedComponent: FC) => {
   const Component = (props: any) => {
     const router = useRouter();
-    const { data } = useSWR('/api/users', userFetcher);
+    const { data } = useSWR('/api/users', fetcher);
     console.log(data);
     useEffect(() => {
-      if (data && !data) {
+      if (data !== undefined && !data) {
         router.replace('/signin');
       }
     }, [data, router]);
