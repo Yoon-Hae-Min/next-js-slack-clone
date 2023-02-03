@@ -13,9 +13,8 @@ import Button from '@components/Button';
 interface Props {
   show: boolean;
   onCloseModal: () => void;
-  setShowInviteChannelModal: (flag: boolean) => void;
 }
-const InviteChannelModal: FC<Props> = ({ show, onCloseModal, setShowInviteChannelModal }) => {
+const InviteChannelModal: FC<Props> = ({ show, onCloseModal }) => {
   const router = useRouter();
   const { workspace, channel } = router.query;
   const [newMember, onChangeNewMember, setNewMember] = useInput('');
@@ -37,7 +36,7 @@ const InviteChannelModal: FC<Props> = ({ show, onCloseModal, setShowInviteChanne
         })
         .then(() => {
           mutateMembers();
-          setShowInviteChannelModal(false);
+          onCloseModal();
           setNewMember('');
         })
         .catch((error) => {
@@ -45,7 +44,7 @@ const InviteChannelModal: FC<Props> = ({ show, onCloseModal, setShowInviteChanne
           toast.error(error.response?.data, { position: 'bottom-center' });
         });
     },
-    [channel, mutateMembers, newMember, setNewMember, setShowInviteChannelModal, workspace]
+    [newMember, workspace, channel, mutateMembers, onCloseModal, setNewMember]
   );
 
   return (

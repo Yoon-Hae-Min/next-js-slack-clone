@@ -13,15 +13,14 @@ import Button from '@components/Button';
 interface Props {
   show: boolean;
   onCloseModal: () => void;
-  setShowInviteWorkspaceModal: (flag: boolean) => void;
 }
 
-const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal, setShowInviteWorkspaceModal }) => {
+const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal }) => {
   const router = useRouter();
   const { workspace } = router.query;
   const [newMember, onChangeNewMember, setNewMember] = useInput('');
   const { data: userData } = useSWR<IUser>('/api/users', userFetcher);
-  console.log(workspace);
+
   const { mutate: revalidateMember } = useSWR<IChannel[]>(
     workspace && userData ? `/api/workspaces/${workspace}/members` : null,
     userFetcher
@@ -39,7 +38,7 @@ const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal, setShowInviteWork
         })
         .then((response) => {
           revalidateMember();
-          setShowInviteWorkspaceModal(false);
+          onCloseModal();
           setNewMember('');
         })
         .catch((error) => {

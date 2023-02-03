@@ -7,9 +7,8 @@ import React, { useCallback, FC } from 'react';
 interface Props {
   show: boolean;
   onCloseModal: () => void;
-  setShowCreateChannelModal: (flag: boolean) => void;
 }
-const CreateChannelModal: FC<Props> = ({ show, onCloseModal, setShowCreateChannelModal }) => {
+const CreateChannelModal: FC<Props> = ({ show, onCloseModal }) => {
   const [newChannel, onChangeNewChannel, setNewChannel] = useInput('');
 
   return (
