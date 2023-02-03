@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Input from '@components/Input';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
-import { signUpRequest } from 'apis/signup';
+import { signUpRequest } from 'apis/auth';
 
 const SignUp = () => {
   const { trigger, isMutating } = useSWRMutation('/api/users', signUpRequest);

@@ -4,7 +4,7 @@ import Input from '@components/Input';
 import { useRouter } from 'next/router';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
-import { signInRequest } from 'apis/signin';
+import { signInRequest } from 'apis/auth';
 
 const SignIn = () => {
   const router = useRouter();
