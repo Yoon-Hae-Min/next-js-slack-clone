@@ -1,29 +1,27 @@
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
-import { IChannel, IUser } from 'types/db';
+import { IUser } from 'typings/db';
 import axios from 'axios';
 import React, { FC, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
-import { useRouter } from 'next/router';
-import { userFetcher } from 'apis/user';
+import { fetcher } from '@utils/fetcher';
 import Input from '@components/Input';
+import { useRouter } from 'next/router';
 import Button from '@components/Button';
 
 interface Props {
   show: boolean;
   onCloseModal: () => void;
 }
-
-const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal }) => {
+const InviteChannelModal: FC<Props> = ({ show, onCloseModal }) => {
   const router = useRouter();
-  const { workspace } = router.query;
+  const { workspace, channel } = router.query;
   const [newMember, onChangeNewMember, setNewMember] = useInput('');
-  const { data: userData } = useSWR<IUser>('/api/users', userFetcher);
-
-  const { mutate: revalidateMember } = useSWR<IChannel[]>(
-    workspace && userData ? `/api/workspaces/${workspace}/members` : null,
-    userFetcher
+  const { data: userData } = useSWR<IUser>('/api/users', fetcher);
+  const { mutate: mutateMembers } = useSWR<IUser[]>(
+    userData && channel ? `/api/workspaces/${workspace}/channels/${channel}/members` : null,
+    fetcher
   );
 
   const onInviteMember = useCallback(
@@ -33,11 +31,11 @@ const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal }) => {
         return;
       }
       axios
-        .post(`/api/workspaces/${workspace}/members`, {
+        .post(`/api/workspaces/${workspace}/channels/${channel}/members`, {
           email: newMember,
         })
-        .then((response) => {
-          revalidateMember();
+        .then(() => {
+          mutateMembers();
           onCloseModal();
           setNewMember('');
         })
@@ -46,14 +44,14 @@ const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal }) => {
           toast.error(error.response?.data, { position: 'bottom-center' });
         });
     },
-    [workspace, newMember]
+    [newMember, workspace, channel, mutateMembers, onCloseModal, setNewMember]
   );
 
   return (
     <Modal show={show} onCloseModal={onCloseModal}>
       <form onSubmit={onInviteMember}>
-        <Input.wrapper title="이메일">
-          <Input id="member" type="email" value={newMember} onChange={onChangeNewMember} />
+        <Input.wrapper title="채널 맴버 초대">
+          <Input id="member" value={newMember} onChange={onChangeNewMember} />
         </Input.wrapper>
         <Button type="submit">초대하기</Button>
       </form>
@@ -61,4 +59,4 @@ const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal }) => {
   );
 };
 
-export default InviteWorkspaceModal;
+export default InviteChannelModal;
