@@ -3,6 +3,7 @@ import React, { FC, VFC, memo, useMemo } from 'react';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
+import Image from 'next/image';
 
 interface Props {
   data: IDM | IChat;
@@ -42,7 +43,7 @@ const Chat: FC<Props> = ({ data }) => {
   return (
     <div>
       <div className="chat-img">
-        <img src={gravatar.url(user.email, { s: '36px', d: 'retro' })} alt={user.nickname} />
+        <Image src={`https:${gravatar.url(user.email, { s: '36px', d: 'retro' })}`} alt={user.nickname} />
       </div>
       <div className="chat-text">
         <div className="chat-user">

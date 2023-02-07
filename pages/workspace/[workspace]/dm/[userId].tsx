@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
 import Workspace from '@layouts/Workspace';
 import makeSection from '@utils/makeSection';
+import Image from 'next/image';
 
 const DirectMessage = () => {
   const router = useRouter();
@@ -154,7 +155,11 @@ const DirectMessage = () => {
     <Workspace>
       <div className="relative flex h-[calc(100vh-38px)] flex-col flex-wrap">
         <header className=" flex h-16 w-full items-center p-5 font-bold shadow-[0_1px_0_rgba(29,28,29,0.13)]">
-          <img className="mr-2" src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
+          <Image
+            className="mr-2"
+            src={`https:${gravatar.url(userData.email, { s: '24px', d: 'retro' })}`}
+            alt={userData.nickname}
+          />
           <span>{userData.nickname}</span>
         </header>
         <ChatList chatSections={chatSections} setSize={setSize} isReachingEnd={isReachingEnd} />
