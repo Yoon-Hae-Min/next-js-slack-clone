@@ -16,6 +16,8 @@ import WorkspaceDropDown from '@components/Menu/WorkspaceMenu';
 import UserDropDown from '@components/Menu/UserMenu';
 import { signOutRequest } from '@apis/auth';
 import useSignOutMutation from '@hooks/Mutations/useSignOutMutation';
+import ChannelList from '@components/ChannelList';
+import DMList from '@components/DMList';
 
 const Workspace = ({ children }: PropsWithChildren) => {
   const { data: userData } = useSWR<IUser | false>('/api/users', fetcher);
@@ -75,7 +77,10 @@ const Workspace = ({ children }: PropsWithChildren) => {
             openInviteWorkspaceModal={openInviteWorkspaceModal}
             openCreateChannelModal={openCreateChannelModal}
           />
-          <div className="h-[calc(100vh-102px)] overflow-y-auto">MenuScroll</div>
+          <div className="h-[calc(100vh-102px)] overflow-y-auto">
+            <ChannelList />
+            <DMList />
+          </div>
         </nav>
         <div className="flex-1">{children}</div>
       </div>
