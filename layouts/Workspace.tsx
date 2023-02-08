@@ -1,12 +1,12 @@
 import withAuth from '@hooks/HOC/withAuth';
 import { fetcher } from '@utils/fetcher';
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import gravatar from 'gravatar';
 import useSWR from 'swr';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { IUser } from 'typings/db';
+import type { IChannel, IUser } from 'typings/db';
 import CreateChannelModal from '@components/Modal/CreateChannelModal';
 import InviteChannelModal from '@components/Modal/InviteChannelModal';
 import InviteWorkspaceModal from '@components/Modal/InviteWorkspaceModal';
@@ -14,13 +14,16 @@ import useModal from '@hooks/useModal';
 import CreateWorkspaceModal from '@components/Modal/CreateWorkspaceModal';
 import WorkspaceDropDown from '@components/Menu/WorkspaceMenu';
 import UserDropDown from '@components/Menu/UserMenu';
-import { signOutRequest } from '@apis/auth';
-import useSignOutMutation from '@hooks/Mutations/useSignOutMutation';
 import ChannelList from '@components/ChannelList';
 import DMList from '@components/DMList';
+import useSocket from '@hooks/useSocket';
 
 const Workspace = ({ children }: PropsWithChildren) => {
+  const router = useRouter();
+  const { workspace } = router.query;
   const { data: userData } = useSWR<IUser | false>('/api/users', fetcher);
+  const { data: channelData } = useSWR<IChannel[]>(userData ? `/api/workspaces/${workspace}/channels` : null, fetcher);
+  const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
 
   const [showUserMenu, openUserMenu, closeUserMenu] = useModal(false);
   const [showCreateWorkspaceModal, openCreateWorkspaceModal, closeCreateWorkspaceModal] = useModal(false);
@@ -28,6 +31,20 @@ const Workspace = ({ children }: PropsWithChildren) => {
   const [showWorkspaceDropDown, openWorkspaceDropDown, closeWorkspaceDropDown] = useModal(false);
   const [showInviteWorkspaceModal, openInviteWorkspaceModal, closeInviteWorkspaceModal] = useModal(false);
   const [showInviteChannelModal, openInviteChannelModal, closeInviteChannelModal] = useModal(false);
+
+  const [socket, disconnect] = useSocket(workspace as string);
+
+  useEffect(() => {
+    if (channelData && userData && socket) {
+      socket.emit('login', { id: userData.id, channels: channelData.map((v) => v.id) });
+    }
+  }, [channelData, socket, userData]);
+
+  useEffect(() => {
+    return () => {
+      disconnect();
+    };
+  }, [workspace, disconnect]);
 
   if (!userData) return null;
   return (
