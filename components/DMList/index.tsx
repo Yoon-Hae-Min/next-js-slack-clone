@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
+import useSocket from '@hooks/useSocket';
 
 const DMList: FC = () => {
   const router = useRouter();
@@ -15,13 +16,22 @@ const DMList: FC = () => {
     userData ? `/api/workspaces/${workspace}/members` : null,
     fetcher
   );
-  //   const [socket] = useSocket(workspace);
+  const [socket, disconnect] = useSocket(workspace as string);
   const [channelCollapse, setChannelCollapse] = useState(false);
   const [onlineList, setOnlineList] = useState<number[]>([]);
 
   const toggleChannelCollapse = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    socket?.on('onlineList', (data: number[]) => {
+      setOnlineList(data);
+    });
+    return () => {
+      socket?.off('onlineList');
+    };
+  }, [socket]);
 
   //   useEffect(() => {
   //     console.log('DMList: workspace 바꼈다', workspace);
@@ -69,8 +79,8 @@ const DMList: FC = () => {
                 href={`/workspace/${workspace}/dm/${member.id}`}
               >
                 <i
-                  className={`c-icon p-channel_sidebar__presence_icon p-channel_sidebar__presence_icon--dim_enabled c-presence ${
-                    isOnline ? 'c-presence--active c-icon--presence-online' : 'c-icon--presence-offline'
+                  className={`text-md mr-1 block h-3 w-3 rounded-full border-2 ${
+                    isOnline ? ' border-none bg-green-900' : ''
                   }`}
                   aria-hidden="true"
                   data-qa="presence_indicator"
