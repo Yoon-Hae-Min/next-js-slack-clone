@@ -1,5 +1,5 @@
 import { IUser } from 'typings/db';
-import React, { FC, useCallback, useEffect, useRef, VFC } from 'react';
+import React, { FC, KeyboardEvent, useCallback, useEffect, useRef, VFC } from 'react';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
 import { fetcher } from '@utils/fetcher';
@@ -8,7 +8,7 @@ import autosize from 'autosize';
 
 interface Props {
   chat?: string;
-  onSubmitForm?: (e: any) => void;
+  onSubmitForm: (e: any) => void;
   onChangeChat?: (e: any) => void;
   placeholder?: string;
 }
@@ -43,6 +43,13 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
   //     [memberData]
   //   );
 
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      onSubmitForm(e);
+    }
+  };
+
   useEffect(() => {
     if (textAreaRef.current) {
       autosize(textAreaRef.current);
@@ -60,6 +67,7 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
           id="editor-chat"
           value={chat}
           ref={textAreaRef}
+          onKeyDown={onKeyDown}
           onChange={onChangeChat}
           placeholder={placeholder}
         ></textarea>

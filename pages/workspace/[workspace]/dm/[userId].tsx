@@ -3,8 +3,8 @@ import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
 import { IDM } from 'typings/db';
 import axios from 'axios';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useSWR from 'swr';
+import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import useSWR, { mutate } from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';
@@ -12,11 +12,13 @@ import { fetcher } from '@utils/fetcher';
 import Workspace from '@layouts/Workspace';
 import makeSection from '@utils/makeSection';
 import Image from 'next/image';
+import useSocket from '@hooks/useSocket';
+import Scrollbars from 'react-custom-scrollbars';
+import api from '@apis/axios';
 
 const DirectMessage = () => {
   const router = useRouter();
   const { workspace, userId } = router.query;
-  console.log(workspace, userId);
 
   const { data: userData } = useSWR(`/api/workspaces/${workspace}/users/${userId}`, fetcher);
   const { data: myData } = useSWR('/api/users', fetcher);
@@ -29,9 +31,11 @@ const DirectMessage = () => {
     (index: number) => `/api/workspaces/${workspace}/dms/${userId}/chats?perPage=20&page=${index + 1}`,
     fetcher
   );
+
   const isEmpty = chatData?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < 20) || false;
   const [dragOver, setDragOver] = useState(false);
+  const scrollbarRef = useRef<Scrollbars>(null);
 
   //   const onSubmitForm = useCallback(
   //     (e) => {
@@ -67,9 +71,48 @@ const DirectMessage = () => {
   //     [chat, chatData, myData, userData, workspace, id]
   //   );
 
-  const onSubmit = () => {
-    console.log('submit');
-  };
+  // const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   console.log('submit');
+
+  // };
+
+  const onSubmitForm = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      if (chat?.trim() && chatData !== undefined) {
+        const savedChat = chat;
+        mutateChat((prevChatData) => {
+          prevChatData?.[0].unshift({
+            id: (chatData[0][0]?.id || 0) + 1,
+            content: savedChat,
+            SenderId: myData.id,
+            Sender: myData,
+            ReceiverId: userData.id,
+            Receiver: userData,
+            createdAt: new Date(),
+          });
+          return prevChatData;
+        }, false).then(() => {
+          setChat('');
+          scrollbarRef.current?.scrollToBottom();
+        });
+        api
+          .post(
+            `/api/workspaces/${workspace}/dms/${userId}/chats`,
+            {
+              content: chat,
+            },
+            { withCredentials: true }
+          )
+          .then((data) => {
+            mutateChat();
+          })
+          .catch(console.error);
+      }
+    },
+    [chat, chatData, myData, userData, workspace, userId]
+  );
 
   //   const onMessage = useCallback((data: IDM) => {
   //     // id는 상대방 아이디
@@ -146,7 +189,7 @@ const DirectMessage = () => {
   }, []);
 
   if (!userData || !myData) {
-    return null;
+    return <Workspace />;
   }
 
   const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
@@ -159,11 +202,18 @@ const DirectMessage = () => {
             className="mr-2"
             src={`https:${gravatar.url(userData.email, { s: '24px', d: 'retro' })}`}
             alt={userData.nickname}
+            width={24}
+            height={24}
           />
           <span>{userData.nickname}</span>
         </header>
-        <ChatList chatSections={chatSections} setSize={setSize} isReachingEnd={isReachingEnd} />
-        <ChatBox onSubmitForm={onSubmit} chat={chat} onChangeChat={onChangeChat} />
+        <ChatList
+          chatSections={chatSections}
+          setSize={setSize}
+          scrollRef={scrollbarRef}
+          isReachingEnd={isReachingEnd}
+        />
+        <ChatBox onSubmitForm={onSubmitForm} chat={chat} onChangeChat={onChangeChat} />
         {/* {dragOver && (
         <div className="absolute top-16 left-0 flex h-[calc(100%-64px)] w-full items-center justify-center bg-white text-4xl opacity-70">
           업로드!
