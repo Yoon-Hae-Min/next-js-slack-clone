@@ -14,6 +14,7 @@ const Chat: FC<Props> = ({ data }) => {
   const router = useRouter();
   const { workspace } = router.query;
   const user = 'Sender' in data ? data.Sender : data.User;
+  console.log(data);
 
   //   const result = useMemo(
   //     () =>
@@ -41,15 +42,21 @@ const Chat: FC<Props> = ({ data }) => {
   //   );
 
   return (
-    <div>
-      <div className="chat-img">
-        <Image src={`https:${gravatar.url(user.email, { s: '36px', d: 'retro' })}`} alt={user.nickname} />
+    <div className=" flex items-center py-2 px-5">
+      <div className="chat-img mr-2">
+        <Image
+          src={`https:${gravatar.url(user.email, { s: '36px', d: 'retro' })}`}
+          width={36}
+          height={36}
+          alt={user.nickname}
+        />
       </div>
-      <div className="chat-text">
-        <div className="chat-user">
-          <b>{user.nickname}</b>
-          <span>{dayjs(data.createdAt).format('h:mm A')}</span>
+      <div className="chat-text flex flex-1 flex-col flex-wrap">
+        <div className="chat-user flex">
+          <b className="mr-1">{user.nickname}</b>
+          <span className=" text-sm">{dayjs(data.createdAt).format('h:mm A')}</span>
         </div>
+        <div>{data.content}</div>
         {/* <p>{result}</p> */}
       </div>
     </div>
