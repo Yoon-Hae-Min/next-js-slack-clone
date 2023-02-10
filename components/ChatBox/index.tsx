@@ -4,7 +4,9 @@ import useSWR from 'swr';
 import gravatar from 'gravatar';
 import { fetcher } from '@utils/fetcher';
 import { useRouter } from 'next/router';
+import { Mention, MentionsInput, SuggestionDataItem } from 'react-mentions';
 import autosize from 'autosize';
+import Image from 'next/image';
 
 interface Props {
   chat?: string;
@@ -21,27 +23,31 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
   });
   const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
 
-  //   const renderSuggestion = useCallback(
-  //     (
-  //       suggestion: SuggestionDataItem,
-  //       search: string,
-  //       highlightedDisplay: React.ReactNode,
-  //       index: number,
-  //       focus: boolean
-  //     ): React.ReactNode => {
-  //       if (!memberData) return;
-  //       return (
-  //         <EachMention focus={focus}>
-  //           <img
-  //             src={gravatar.url(memberData[index].email, { s: '20px', d: 'retro' })}
-  //             alt={memberData[index].nickname}
-  //           />
-  //           <span>{highlightedDisplay}</span>
-  //         </EachMention>
-  //       );
-  //     },
-  //     [memberData]
-  //   );
+  const renderSuggestion = useCallback(
+    (
+      suggestion: SuggestionDataItem,
+      search: string,
+      highlightedDisplay: React.ReactNode,
+      index: number,
+      focus: boolean
+    ): React.ReactNode => {
+      if (!memberData) return;
+      return (
+        <button
+          className={`${focus && ' bg-[#1264a3] text-white'}text-[rgb(28, 29, 28)] flex w-full items-center py-1 px-5`}
+        >
+          <Image
+            src={`https:${gravatar.url(memberData[index].email, { s: '20px', d: 'retro' })}`}
+            alt={memberData[index].nickname}
+            width={20}
+            height={20}
+          />
+          <span>{highlightedDisplay}</span>
+        </button>
+      );
+    },
+    [memberData]
+  );
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -62,15 +68,23 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
         className="text-[rgb(29, 28, 29)] text-md border-[rgb(29, 28, 29)] w-full rounded-sm"
         onSubmit={onSubmitForm}
       >
-        <textarea
+        <MentionsInput
           className=" text-md w-full border p-2"
           id="editor-chat"
           value={chat}
-          ref={textAreaRef}
+          inputRef={textAreaRef}
           onKeyDown={onKeyDown}
           onChange={onChangeChat}
           placeholder={placeholder}
-        ></textarea>
+        >
+          <Mention
+            appendSpaceOnAdd
+            trigger="@"
+            data={memberData?.map((v) => ({ display: v.nickname, id: v.id })) || []}
+            renderSuggestion={renderSuggestion}
+          ></Mention>
+        </MentionsInput>
+
         <div className=" relative flex h-10 items-center rounded-l-sm rounded-r-sm border-t-2 border-[rgb(221,221,221)] bg-[rgb(248,248,248)]">
           <button
             className={
