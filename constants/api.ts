@@ -4,5 +4,6 @@ export const BASE_URL = {
 
 export const API_PATH = {
   USERS: '/api/users',
+  MEMBERS: (workspace: string | string[]) => `/api/workspaces/${workspace}/members`,
   CHANNELS: (workspace: string | string[]) => `/api/workspaces/${workspace}/channels`,
 };
