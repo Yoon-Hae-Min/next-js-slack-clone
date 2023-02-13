@@ -4,20 +4,19 @@ import React, { FC, useCallback, useState } from 'react';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
+import { API_PATH } from 'constants/api';
+import useToggle from '@hooks/useToggle';
+import { PAGE_PATH } from 'constants/path';
 
 const ChannelList: FC = () => {
   const router = useRouter();
   const { workspace } = router.query;
   // const [socket] = useSocket(workspace);
-  const { data: userData, mutate } = useSWR<IUser>('/api/users', fetcher, {
+  const { data: userData, mutate } = useSWR<IUser>(API_PATH.USERS, fetcher, {
     dedupingInterval: 2000, // 2초
   });
-  const { data: channelData } = useSWR<IChannel[]>(userData ? `/api/workspaces/${workspace}/channels` : null, fetcher);
-  const [channelCollapse, setChannelCollapse] = useState(false);
-
-  const toggleChannelCollapse = useCallback(() => {
-    setChannelCollapse((prev) => !prev);
-  }, []);
+  const { data: channelData } = useSWR<IChannel[]>(workspace ? API_PATH.CHANNELS(workspace) : null, fetcher);
+  const [channelCollapse, toggleChannelCollapse] = useToggle(false);
 
   return (
     <>
@@ -44,7 +43,7 @@ const ChannelList: FC = () => {
               <Link
                 className="flex h-7 items-center pl-9 font-bold"
                 key={channel.name}
-                href={`/workspace/${workspace}/channel/${channel.name}`}
+                href={PAGE_PATH.CHANNEL(workspace as string, channel.name)}
               >
                 <span># {channel.name}</span>
               </Link>
