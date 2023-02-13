@@ -32,44 +32,12 @@ const DirectMessage = () => {
     fetcher
   );
 
+  const [socket] = useSocket();
+
   const isEmpty = chatData?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < 20) || false;
   const [dragOver, setDragOver] = useState(false);
   const scrollbarRef = useRef<Scrollbars>(null);
-
-  //   const onSubmitForm = useCallback(
-  //     (e) => {
-  //       e.preventDefault();
-  //       console.log(chat);
-  //       if (chat?.trim() && chatData) {
-  //         const savedChat = chat;
-  //         mutateChat((prevChatData) => {
-  //           prevChatData?.[0].unshift({
-  //             id: (chatData[0][0]?.id || 0) + 1,
-  //             content: savedChat,
-  //             SenderId: myData.id,
-  //             Sender: myData,
-  //             ReceiverId: userData.id,
-  //             Receiver: userData,
-  //             createdAt: new Date(),
-  //           });
-  //           return prevChatData;
-  //         }, false).then(() => {
-  //           setChat('');
-  //           scrollbarRef.current?.scrollToBottom();
-  //         });
-  //         axios
-  //           .post(`/api/workspaces/${workspace}/dms/${id}/chats`, {
-  //             content: chat,
-  //           })
-  //           .then(() => {
-  //             revalidate();
-  //           })
-  //           .catch(console.error);
-  //       }
-  //     },
-  //     [chat, chatData, myData, userData, workspace, id]
-  //   );
 
   // const onSubmit = (e: FormEvent<HTMLFormElement>) => {
   //   e.preventDefault();
@@ -114,43 +82,42 @@ const DirectMessage = () => {
     [chat, chatData, myData, userData, workspace, userId]
   );
 
-  //   const onMessage = useCallback((data: IDM) => {
-  //     // id는 상대방 아이디
-  //     if (data.SenderId === Number(id) && myData.id !== Number(id)) {
-  //       mutateChat((chatData) => {
-  //         chatData?.[0].unshift(data);
-  //         return chatData;
-  //       }, false).then(() => {
-  //         if (scrollbarRef.current) {
-  //           if (
-  //             scrollbarRef.current.getScrollHeight() <
-  //             scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 150
-  //           ) {
-  //             console.log('scrollToBottom!', scrollbarRef.current?.getValues());
-  //             setTimeout(() => {
-  //               scrollbarRef.current?.scrollToBottom();
-  //             }, 50);
-  //           }
-  //         }
-  //       });
-  //     }
-  //   }, []);
+  const onMessage = useCallback((data: IDM) => {
+    // id는 상대방 아이디
+    if (data.SenderId === Number(userId) && myData.id !== Number(userId)) {
+      mutateChat((chatData) => {
+        chatData?.[0].unshift(data);
+        return chatData;
+      }, false).then(() => {
+        if (scrollbarRef.current) {
+          if (
+            scrollbarRef.current.getScrollHeight() <
+            scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 150
+          ) {
+            console.log('scrollToBottom!', scrollbarRef.current?.getValues());
+            setTimeout(() => {
+              scrollbarRef.current?.scrollToBottom();
+            }, 50);
+          }
+        }
+      });
+    }
+  }, []);
 
-  //   useEffect(() => {
-  //     socket?.on('dm', onMessage);
-  //     return () => {
-  //       socket?.off('dm', onMessage);
-  //     };
-  //   }, [socket, onMessage]);
+  useEffect(() => {
+    socket?.on('dm', onMessage);
+    return () => {
+      socket?.off('dm', onMessage);
+    };
+  }, [socket, onMessage]);
 
-  // 로딩 시 스크롤바 제일 아래로
-  //   useEffect(() => {
-  //     if (chatData?.length === 1) {
-  //       setTimeout(() => {
-  //         scrollbarRef.current?.scrollToBottom();
-  //       }, 100);
-  //     }
-  //   }, [chatData]);
+  useEffect(() => {
+    if (chatData?.length === 1) {
+      setTimeout(() => {
+        scrollbarRef.current?.scrollToBottom();
+      }, 100);
+    }
+  }, [chatData]);
 
   const onDrop = useCallback(
     (e: any) => {
