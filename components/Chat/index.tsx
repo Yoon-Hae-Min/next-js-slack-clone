@@ -1,17 +1,18 @@
 import { IDM, IChat } from 'typings/db';
-import React, { FC, VFC, memo, useMemo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import regexifyString from 'regexify-string';
 import Link from 'next/link';
+import { PAGE_PATH } from 'constants/path';
+import { USER_MENTION, USER_NAME } from 'constants/regularExpression';
 
 interface Props {
   data: IDM | IChat;
 }
 
-// const BACK_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3095' : 'https://sleact.nodebird.com';
 const Chat: FC<Props> = ({ data }) => {
   const router = useRouter();
   const { workspace } = router.query;
@@ -22,17 +23,14 @@ const Chat: FC<Props> = ({ data }) => {
     () =>
       regexifyString({
         input: data.content,
-        pattern: /@\[(.+?)]\((\d+?)\)|\n/g,
+        pattern: USER_MENTION,
         decorator(match, index) {
-          const arr: string[] | null = match.match(/@\[(.+?)]\((\d+?)\)/)!;
-          if (arr) {
-            return (
-              <Link key={match + index} href={`/workspace/${workspace}/dm/${arr[2]}`}>
-                @{arr[1]}
-              </Link>
-            );
-          }
-          return <br key={index} />;
+          const userName = match.match(USER_NAME)?.[1];
+          return (
+            <Link className="bg-amber-300" key={match + index} href={PAGE_PATH.DM(workspace, userName)}>
+              @{userName}
+            </Link>
+          );
         },
       }),
     [workspace, data.content]
@@ -53,7 +51,7 @@ const Chat: FC<Props> = ({ data }) => {
           <b className="mr-1">{user.nickname}</b>
           <span className=" text-sm">{dayjs(data.createdAt).format('h:mm A')}</span>
         </div>
-        <div>{result}</div>
+        <div className="whitespace-pre-wrap">{result}</div>
       </div>
     </div>
   );
