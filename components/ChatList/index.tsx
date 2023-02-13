@@ -1,7 +1,7 @@
 import Chat from '@components/Chat';
 import { IDM, IChat } from 'typings/db';
-import React, { useCallback, forwardRef, RefObject, MutableRefObject, FC, useRef, ForwardedRef } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
+import React, { useCallback, forwardRef, RefObject, MutableRefObject, FC, useRef, ForwardedRef, UIEvent } from 'react';
+import { Scrollbars, positionValues } from 'react-custom-scrollbars';
 interface Props {
   chatSections: { [key: string]: (IDM | IChat)[] };
   setSize: (f: (size: number) => number) => Promise<(IDM | IChat)[][] | undefined>;
@@ -11,11 +11,17 @@ interface Props {
 
 // eslint-disable-next-line react/display-name
 const ChatList = ({ chatSections, setSize, isReachingEnd, scrollRef }: Props) => {
-  const scrollbarRef = useRef();
+  const onScroll = useCallback((values: positionValues) => {
+    if (values.scrollTop === 0 && !isReachingEnd) {
+      setSize((size) => size + 1).then(() => {
+        scrollRef.current?.scrollTop(scrollRef.current?.getScrollHeight() - values.scrollHeight);
+      });
+    }
+  }, []);
 
   return (
     <div className=" flex w-full flex-1">
-      <Scrollbars autoHide ref={scrollRef}>
+      <Scrollbars autoHide ref={scrollRef} onScrollFrame={onScroll}>
         {Object.entries(chatSections).map(([date, chats]) => {
           return (
             <div className={`section-${date} mt-5 border-t border-[#eeee]`} key={date}>
