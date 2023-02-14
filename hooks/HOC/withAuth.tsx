@@ -1,19 +1,17 @@
-import api from 'apis/axios';
 import { fetcher } from '@utils/fetcher';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import useSWR from 'swr';
+import { API_PATH } from 'constants/api';
 
 const withAuth = (WrappedComponent: FC) => {
   const Component = (props: any) => {
     const router = useRouter();
-    const { data } = useSWR('/api/users', fetcher);
-    console.log(data);
-    useEffect(() => {
-      if (data !== undefined && !data) {
-        router.replace('/signin');
-      }
-    }, [data, router]);
+    const { data } = useSWR(API_PATH.USERS, fetcher, {
+      onSuccess: (data) => {
+        !data && router.push('/signin');
+      },
+    });
 
     return data ? <WrappedComponent {...props} /> : null;
   };
