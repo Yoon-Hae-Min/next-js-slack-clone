@@ -22,7 +22,7 @@ const DirectMessage = () => {
   const router = useRouter();
   const { workspace, userId } = router.query;
 
-  const { data: userData } = useSWR(API_PATH.WORKSPACE.USERS(workspace, userId), fetcher);
+  const { data: userData } = useSWR(workspace && userId ? API_PATH.WORKSPACE.USERS(workspace, userId) : null, fetcher);
   const { data: myData } = useSWR(API_PATH.USERS, fetcher);
   const [chat, onChangeChat, setChat] = useInput('');
   const {
@@ -75,7 +75,7 @@ const DirectMessage = () => {
           .catch(console.error);
       }
     },
-    [chat, chatData, myData, userData, workspace, userId]
+    [chat, chatData, mutateChat, workspace, userId, myData, userData, setChat]
   );
 
   const onMessage = useCallback((data: IDM) => {
@@ -170,12 +170,7 @@ const DirectMessage = () => {
           />
           <span>{userData.nickname}</span>
         </header>
-        <ChatList
-          chatSections={chatSections}
-          setSize={setSize}
-          scrollRef={scrollbarRef}
-          isReachingEnd={isReachingEnd}
-        />
+        <ChatList chatSections={chatSections} setSize={setSize} ref={scrollbarRef} isReachingEnd={isReachingEnd} />
         <ChatBox onSubmitForm={onSubmitForm} chat={chat} onChangeChat={onChangeChat} />
         {/* {dragOver && (
         <div className="absolute top-16 left-0 flex h-[calc(100%-64px)] w-full items-center justify-center bg-white text-4xl opacity-70">
