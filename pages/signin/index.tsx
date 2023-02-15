@@ -7,6 +7,7 @@ import useSWRMutation from 'swr/mutation';
 import { signInRequest } from 'apis/auth';
 import { API_PATH } from 'constants/api';
 import { PAGE_PATH } from 'constants/path';
+import withOutAuth from '@hooks/HOC/withOutAuth';
 
 const SignIn = () => {
   const router = useRouter();
@@ -78,4 +79,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default withOutAuth(SignIn);

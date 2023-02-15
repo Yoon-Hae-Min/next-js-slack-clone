@@ -6,6 +6,7 @@ import useSWRMutation from 'swr/mutation';
 import { signUpRequest } from 'apis/auth';
 import { API_PATH } from 'constants/api';
 import { PAGE_PATH } from 'constants/path';
+import withOutAuth from '@hooks/HOC/withOutAuth';
 
 const SignUp = () => {
   const { trigger, isMutating } = useSWRMutation(API_PATH.USERS, signUpRequest);
@@ -113,4 +114,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default withOutAuth(SignUp);

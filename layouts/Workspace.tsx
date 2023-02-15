@@ -1,4 +1,3 @@
-import withAuth from '@hooks/HOC/withAuth';
 import { fetcher } from '@utils/fetcher';
 import { useRouter } from 'next/router';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
@@ -109,4 +108,4 @@ const Workspace = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default withAuth(Workspace);
+export default Workspace;

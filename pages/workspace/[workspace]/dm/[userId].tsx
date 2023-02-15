@@ -16,6 +16,7 @@ import useSocket from '@hooks/useSocket';
 import Scrollbars from 'react-custom-scrollbars';
 import api from '@apis/axios';
 import { API_PATH } from 'constants/api';
+import withAuth from '@hooks/HOC/withAuth';
 
 const DirectMessage = () => {
   const router = useRouter();
@@ -186,4 +187,4 @@ const DirectMessage = () => {
   );
 };
 
-export default DirectMessage;
+export default withAuth(DirectMessage);

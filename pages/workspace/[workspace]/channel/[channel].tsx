@@ -1,3 +1,4 @@
+import withAuth from '@hooks/HOC/withAuth';
 import Workspace from '@layouts/Workspace';
 
 const Channel = () => {
@@ -8,4 +9,4 @@ const Channel = () => {
   );
 };
 
-export default Channel;
+export default withAuth(Channel);
