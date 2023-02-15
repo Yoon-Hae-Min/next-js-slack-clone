@@ -5,10 +5,12 @@ import { useRouter } from 'next/router';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
 import { signInRequest } from 'apis/auth';
+import { API_PATH } from 'constants/api';
+import { PAGE_PATH } from 'constants/path';
 
 const SignIn = () => {
   const router = useRouter();
-  const { trigger } = useSWRMutation('/api/users/login', signInRequest);
+  const { trigger } = useSWRMutation(API_PATH.SIGNIN, signInRequest);
 
   const [email, handleEmail] = useInput('');
   const [password, setPassword] = useInput('');
@@ -22,8 +24,8 @@ const SignIn = () => {
         { email: email, password: password },
         {
           onSuccess: (data) => {
-            router.push('/channel');
-            ///workspace/slack/channel/일반
+            console.log(data);
+            router.push('/workspace/sleact/channel/일반');
           },
           onError: (err) => {
             setSignInError(true);
@@ -68,7 +70,7 @@ const SignIn = () => {
       </form>
       <p className=" ml-auto mr-auto mt-0 mb-2 w-[400px] text-sm text-[rgb(97,96,97)]">
         아직 회원이 아니신가요?&nbsp;
-        <Link href="/signup" className="font-bold text-[rgb(18,100,163)]">
+        <Link href={PAGE_PATH.SIGNUP} className="font-bold text-[rgb(18,100,163)]">
           회원가입 하러가기
         </Link>
       </p>

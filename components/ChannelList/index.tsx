@@ -15,7 +15,7 @@ const ChannelList: FC = () => {
   const { data: userData, mutate } = useSWR<IUser>(API_PATH.USERS, fetcher, {
     dedupingInterval: 2000, // 2초
   });
-  const { data: channelData } = useSWR<IChannel[]>(workspace ? API_PATH.CHANNELS(workspace) : null, fetcher);
+  const { data: channelData } = useSWR<IChannel[]>(workspace ? API_PATH.WORKSPACE.CHANNELS(workspace) : null, fetcher);
   const [channelCollapse, toggleChannelCollapse] = useToggle(false);
 
   return (

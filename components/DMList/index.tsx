@@ -15,7 +15,10 @@ const DMList: FC = () => {
   const { data: userData } = useSWR<IUser>(API_PATH.USERS, fetcher, {
     dedupingInterval: 2000,
   });
-  const { data: memberData } = useSWR<IUserWithOnline[]>(workspace ? API_PATH.MEMBERS(workspace) : null, fetcher);
+  const { data: memberData } = useSWR<IUserWithOnline[]>(
+    workspace ? API_PATH.WORKSPACE.MEMBERS(workspace) : null,
+    fetcher
+  );
   const [socket, disconnect] = useSocket(workspace as string);
   const [channelCollapse, toggleChannelCollapse] = useToggle(false);
   const [onlineList, setOnlineList] = useState<number[]>([]);

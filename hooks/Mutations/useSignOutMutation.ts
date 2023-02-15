@@ -4,16 +4,18 @@ import useSWR, { mutate } from 'swr';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 import { useRouter } from 'next/router';
 import { signOutRequest } from 'apis/auth';
+import { API_PATH } from 'constants/api';
+import { PAGE_PATH } from 'constants/path';
 
-const useSignOutMutation = (option?: SWRMutationConfiguration<any, any, '/api/users/logout'>) => {
+const useSignOutMutation = (option?: SWRMutationConfiguration<any, any, typeof API_PATH.SIGNOUT>) => {
   const router = useRouter();
   return useSWRMutation(
-    '/api/users/logout',
+    API_PATH.SIGNOUT,
     signOutRequest,
     option ?? {
       onSuccess: () => {
-        mutate('/api/users', false);
-        router.push('/signin');
+        mutate(API_PATH.USERS, undefined);
+        router.push(PAGE_PATH.SIGNIN);
       },
     }
   );

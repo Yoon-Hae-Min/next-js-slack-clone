@@ -15,13 +15,14 @@ import Image from 'next/image';
 import useSocket from '@hooks/useSocket';
 import Scrollbars from 'react-custom-scrollbars';
 import api from '@apis/axios';
+import { API_PATH } from 'constants/api';
 
 const DirectMessage = () => {
   const router = useRouter();
   const { workspace, userId } = router.query;
 
-  const { data: userData } = useSWR(`/api/workspaces/${workspace}/users/${userId}`, fetcher);
-  const { data: myData } = useSWR('/api/users', fetcher);
+  const { data: userData } = useSWR(API_PATH.WORKSPACE.USERS(workspace, userId), fetcher);
+  const { data: myData } = useSWR(API_PATH.USERS, fetcher);
   const [chat, onChangeChat, setChat] = useInput('');
   const {
     data: chatData,
@@ -38,12 +39,6 @@ const DirectMessage = () => {
   const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < 20) || false;
   const [dragOver, setDragOver] = useState(false);
   const scrollbarRef = useRef<Scrollbars>(null);
-
-  // const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log('submit');
-
-  // };
 
   const onSubmitForm = useCallback(
     (e: any) => {

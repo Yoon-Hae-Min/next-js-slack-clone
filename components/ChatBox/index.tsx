@@ -22,7 +22,10 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
   const { data: userData } = useSWR<IUser | false>(API_PATH.USERS, fetcher, {
     dedupingInterval: 2000, // 2초
   });
-  const { data: memberData } = useSWR<IUser[]>(userData && workspace ? API_PATH.MEMBERS(workspace) : null, fetcher);
+  const { data: memberData } = useSWR<IUser[]>(
+    userData && workspace ? API_PATH.WORKSPACE.MEMBERS(workspace) : null,
+    fetcher
+  );
 
   const renderSuggestion = useCallback(
     (

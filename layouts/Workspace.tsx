@@ -17,13 +17,13 @@ import UserDropDown from '@components/Menu/UserMenu';
 import ChannelList from '@components/ChannelList';
 import DMList from '@components/DMList';
 import useSocket from '@hooks/useSocket';
+import { API_PATH } from 'constants/api';
 
 const Workspace = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const { workspace } = router.query;
-  const { data: userData } = useSWR<IUser | false>('/api/users', fetcher);
-  const { data: channelData } = useSWR<IChannel[]>(userData ? `/api/workspaces/${workspace}/channels` : null, fetcher);
-  const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
+  const { data: userData } = useSWR<IUser | false>(API_PATH.USERS, fetcher);
+  const { data: channelData } = useSWR<IChannel[]>(workspace ? API_PATH.WORKSPACE.CHANNELS(workspace) : null, fetcher);
 
   const [showUserMenu, openUserMenu, closeUserMenu] = useModal(false);
   const [showCreateWorkspaceModal, openCreateWorkspaceModal, closeCreateWorkspaceModal] = useModal(false);
