@@ -3,13 +3,13 @@ import Link from 'next/link';
 import Input from '@components/Input';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
-import { signUpRequest } from 'apis/auth';
+import { postRequest } from 'apis/axios';
 import { API_PATH } from 'constants/api';
 import { PAGE_PATH } from 'constants/path';
 import withOutAuth from '@hooks/HOC/withOutAuth';
 
 const SignUp = () => {
-  const { trigger, isMutating } = useSWRMutation(API_PATH.USERS, signUpRequest);
+  const { trigger, isMutating } = useSWRMutation(API_PATH.USERS, postRequest);
   const [email, handleEmail] = useInput('');
   const [nickname, handleNickname] = useInput('');
   const [password, setPassword] = useState('');

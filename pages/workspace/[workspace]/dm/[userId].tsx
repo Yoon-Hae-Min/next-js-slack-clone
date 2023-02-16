@@ -2,10 +2,8 @@ import ChatBox from '@components/ChatBox';
 import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
 import { IDM } from 'typings/db';
-import axios from 'axios';
-import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import useSWR, { mutate } from 'swr';
-import useSWRInfinite from 'swr/infinite';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import useSWR from 'swr';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
@@ -14,9 +12,11 @@ import makeSection from '@utils/makeSection';
 import Image from 'next/image';
 import useSocket from '@hooks/useSocket';
 import Scrollbars from 'react-custom-scrollbars';
-import api from '@apis/axios';
 import { API_PATH } from 'constants/api';
 import withAuth from '@hooks/HOC/withAuth';
+import useChatInfinite from '@hooks/Querys/useChatInfinite';
+import { postRequest } from '@apis/axios';
+import useSWRMutation from 'swr/mutation';
 
 const DirectMessage = () => {
   const router = useRouter();
@@ -24,21 +24,15 @@ const DirectMessage = () => {
 
   const { data: userData } = useSWR(workspace && userId ? API_PATH.WORKSPACE.USERS(workspace, userId) : null, fetcher);
   const { data: myData } = useSWR(API_PATH.USERS, fetcher);
-  const [chat, onChangeChat, setChat] = useInput('');
-  const {
-    data: chatData,
-    mutate: mutateChat,
-    setSize,
-  } = useSWRInfinite<IDM[]>(
-    (index: number) => `/api/workspaces/${workspace}/dms/${userId}/chats?perPage=20&page=${index + 1}`,
-    fetcher
+  const [{ data: chatData, mutate: mutateChat, setSize }, isEmpty, isReachingEnd] = useChatInfinite(
+    (index: number) => workspace && userId && API_PATH.WORKSPACE.CHATS(workspace, userId, index)
   );
+  const { trigger } = useSWRMutation(API_PATH.WORKSPACE.DMS(workspace, userId), postRequest);
 
   const [socket] = useSocket();
-
-  const isEmpty = chatData?.[0]?.length === 0;
-  const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < 20) || false;
+  const [chat, onChangeChat, setChat] = useInput('');
   const [dragOver, setDragOver] = useState(false);
+
   const scrollbarRef = useRef<Scrollbars>(null);
 
   const onSubmitForm = useCallback(
@@ -61,17 +55,8 @@ const DirectMessage = () => {
           setChat('');
           scrollbarRef.current?.scrollToBottom();
         });
-        api
-          .post(
-            `/api/workspaces/${workspace}/dms/${userId}/chats`,
-            {
-              content: chat,
-            },
-            { withCredentials: true }
-          )
-          .then((data) => {
-            mutateChat();
-          })
+        trigger({ content: chat })
+          .then(() => mutateChat())
           .catch(console.error);
       }
     },

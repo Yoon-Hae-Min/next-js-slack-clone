@@ -4,14 +4,14 @@ import Input from '@components/Input';
 import { useRouter } from 'next/router';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
-import { signInRequest } from 'apis/auth';
+import { postRequest } from 'apis/axios';
 import { API_PATH } from 'constants/api';
 import { PAGE_PATH } from 'constants/path';
 import withOutAuth from '@hooks/HOC/withOutAuth';
 
 const SignIn = () => {
   const router = useRouter();
-  const { trigger } = useSWRMutation(API_PATH.SIGNIN, signInRequest);
+  const { trigger } = useSWRMutation(API_PATH.SIGNIN, postRequest);
 
   const [email, handleEmail] = useInput('');
   const [password, setPassword] = useInput('');
