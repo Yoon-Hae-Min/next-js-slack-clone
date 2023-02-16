@@ -4,12 +4,12 @@ import React from 'react';
 import { API_PATH } from 'constants/api';
 import { fetcher } from '@utils/fetcher';
 
-const useChatInfinite = (
+const useChatInfinite = <T>(
   getKey: (index: number) => string | undefined
-): [SWRInfiniteResponse<IDM[], any>, boolean, boolean] => {
-  const infinite = useSWRInfinite<IDM[]>(getKey, fetcher);
+): [SWRInfiniteResponse<T[], any>, boolean, boolean] => {
+  const infinite = useSWRInfinite<T[]>(getKey, fetcher);
 
-  const isEmpty = infinite.data?.[0]?.length === 0;
+  const isEmpty = infinite.data?.[0].length === 0;
   const isReachingEnd = isEmpty || (infinite.data && infinite.data[infinite.data.length - 1]?.length < 20) || false;
 
   return [infinite, isEmpty, isReachingEnd];

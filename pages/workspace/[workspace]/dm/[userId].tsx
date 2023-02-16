@@ -22,12 +22,15 @@ const DirectMessage = () => {
   const router = useRouter();
   const { workspace, userId } = router.query;
 
-  const { data: userData } = useSWR(workspace && userId ? API_PATH.WORKSPACE.USERS(workspace, userId) : null, fetcher);
+  const { data: userData } = useSWR(
+    workspace && userId ? API_PATH.WORKSPACE.USER.ID(workspace, userId) : null,
+    fetcher
+  );
   const { data: myData } = useSWR(API_PATH.USERS, fetcher);
   const [{ data: chatData, mutate: mutateChat, setSize }, isEmpty, isReachingEnd] = useChatInfinite(
-    (index: number) => workspace && userId && API_PATH.WORKSPACE.CHATS(workspace, userId, index)
+    (index: number) => workspace && userId && API_PATH.WORKSPACE.DM.PAGES(workspace, userId, index)
   );
-  const { trigger } = useSWRMutation(API_PATH.WORKSPACE.DMS(workspace, userId), postRequest);
+  const { trigger } = useSWRMutation(API_PATH.WORKSPACE.DM.CHATS(workspace, userId), postRequest);
 
   const [socket] = useSocket();
   const [chat, onChangeChat, setChat] = useInput('');
