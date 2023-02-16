@@ -4,6 +4,15 @@ const path = require('path');
 
 module.exports = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/signin',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

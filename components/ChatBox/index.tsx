@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { Mention, MentionsInput, SuggestionDataItem } from 'react-mentions';
 import autosize from 'autosize';
 import Image from 'next/image';
+import { API_PATH } from 'constants/api';
 
 interface Props {
   chat?: string;
@@ -18,10 +19,13 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
   const router = useRouter();
   const { workspace } = router.query;
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const { data: userData } = useSWR<IUser | false>('/api/users', fetcher, {
+  const { data: userData } = useSWR<IUser | false>(API_PATH.USERS, fetcher, {
     dedupingInterval: 2000, // 2초
   });
-  const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
+  const { data: memberData } = useSWR<IUser[]>(
+    userData && workspace ? API_PATH.WORKSPACE.MEMBERS(workspace) : null,
+    fetcher
+  );
 
   const renderSuggestion = useCallback(
     (
@@ -87,10 +91,7 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
 
         <div className=" relative flex h-10 items-center rounded-l-sm rounded-r-sm border-t-2 border-[rgb(221,221,221)] bg-[rgb(248,248,248)]">
           <button
-            className={
-              'c-button-unstyled c-icon_button c-icon_button--light c-icon_button--size_medium c-texty_input__button c-texty_input__button--send absolute right-1 top-1' +
-              (chat?.trim() ? '' : ' c-texty_input__button--disabled')
-            }
+            className="absolute right-1 top-1"
             data-qa="texty_send_button"
             aria-label="Send message"
             data-sk="tooltip_parent"

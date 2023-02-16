@@ -3,10 +3,13 @@ import Link from 'next/link';
 import Input from '@components/Input';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
-import { signUpRequest } from 'apis/auth';
+import { postRequest } from 'apis/axios';
+import { API_PATH } from 'constants/api';
+import { PAGE_PATH } from 'constants/path';
+import withOutAuth from '@hooks/HOC/withOutAuth';
 
 const SignUp = () => {
-  const { trigger, isMutating } = useSWRMutation('/api/users', signUpRequest);
+  const { trigger, isMutating } = useSWRMutation(API_PATH.USERS, postRequest);
   const [email, handleEmail] = useInput('');
   const [nickname, handleNickname] = useInput('');
   const [password, setPassword] = useState('');
@@ -103,7 +106,7 @@ const SignUp = () => {
       </form>
       <p className=" ml-auto mr-auto mt-0 mb-2 w-[400px] text-sm text-[rgb(97,96,97)]">
         이미 계정이 있으신가요?&nbsp;
-        <Link href="/signin" className="font-bold text-[rgb(18,100,163)]">
+        <Link href={PAGE_PATH.SIGNIN} className="font-bold text-[rgb(18,100,163)]">
           로그인 하러가기
         </Link>
       </p>
@@ -111,4 +114,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default withOutAuth(SignUp);

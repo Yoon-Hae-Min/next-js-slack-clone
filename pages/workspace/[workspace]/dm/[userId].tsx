@@ -2,10 +2,8 @@ import ChatBox from '@components/ChatBox';
 import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
 import { IDM } from 'typings/db';
-import axios from 'axios';
-import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import useSWR, { mutate } from 'swr';
-import useSWRInfinite from 'swr/infinite';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import useSWR from 'swr';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
@@ -14,36 +12,31 @@ import makeSection from '@utils/makeSection';
 import Image from 'next/image';
 import useSocket from '@hooks/useSocket';
 import Scrollbars from 'react-custom-scrollbars';
-import api from '@apis/axios';
+import { API_PATH } from 'constants/api';
+import withAuth from '@hooks/HOC/withAuth';
+import useChatInfinite from '@hooks/Querys/useChatInfinite';
+import { postRequest } from '@apis/axios';
+import useSWRMutation from 'swr/mutation';
 
 const DirectMessage = () => {
   const router = useRouter();
   const { workspace, userId } = router.query;
 
-  const { data: userData } = useSWR(`/api/workspaces/${workspace}/users/${userId}`, fetcher);
-  const { data: myData } = useSWR('/api/users', fetcher);
-  const [chat, onChangeChat, setChat] = useInput('');
-  const {
-    data: chatData,
-    mutate: mutateChat,
-    setSize,
-  } = useSWRInfinite<IDM[]>(
-    (index: number) => `/api/workspaces/${workspace}/dms/${userId}/chats?perPage=20&page=${index + 1}`,
+  const { data: userData } = useSWR(
+    workspace && userId ? API_PATH.WORKSPACE.USER.ID(workspace, userId) : null,
     fetcher
   );
+  const { data: myData } = useSWR(API_PATH.USERS, fetcher);
+  const [{ data: chatData, mutate: mutateChat, setSize }, isEmpty, isReachingEnd] = useChatInfinite<IDM>(
+    (index: number) => workspace && userId && API_PATH.WORKSPACE.DM.PAGES(workspace, userId, index)
+  );
+  const { trigger } = useSWRMutation(API_PATH.WORKSPACE.DM.CHATS(workspace, userId), postRequest);
 
   const [socket] = useSocket();
-
-  const isEmpty = chatData?.[0]?.length === 0;
-  const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < 20) || false;
+  const [chat, onChangeChat, setChat] = useInput('');
   const [dragOver, setDragOver] = useState(false);
+
   const scrollbarRef = useRef<Scrollbars>(null);
-
-  // const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log('submit');
-
-  // };
 
   const onSubmitForm = useCallback(
     (e: any) => {
@@ -65,21 +58,12 @@ const DirectMessage = () => {
           setChat('');
           scrollbarRef.current?.scrollToBottom();
         });
-        api
-          .post(
-            `/api/workspaces/${workspace}/dms/${userId}/chats`,
-            {
-              content: chat,
-            },
-            { withCredentials: true }
-          )
-          .then((data) => {
-            mutateChat();
-          })
+        trigger({ content: chat })
+          .then(() => mutateChat())
           .catch(console.error);
       }
     },
-    [chat, chatData, myData, userData, workspace, userId]
+    [chat, chatData, mutateChat, workspace, userId, myData, userData, setChat]
   );
 
   const onMessage = useCallback((data: IDM) => {
@@ -174,12 +158,7 @@ const DirectMessage = () => {
           />
           <span>{userData.nickname}</span>
         </header>
-        <ChatList
-          chatSections={chatSections}
-          setSize={setSize}
-          scrollRef={scrollbarRef}
-          isReachingEnd={isReachingEnd}
-        />
+        <ChatList chatSections={chatSections} setSize={setSize} ref={scrollbarRef} isReachingEnd={isReachingEnd} />
         <ChatBox onSubmitForm={onSubmitForm} chat={chat} onChangeChat={onChangeChat} />
         {/* {dragOver && (
         <div className="absolute top-16 left-0 flex h-[calc(100%-64px)] w-full items-center justify-center bg-white text-4xl opacity-70">
@@ -191,4 +170,4 @@ const DirectMessage = () => {
   );
 };
 
-export default DirectMessage;
+export default withAuth(DirectMessage);

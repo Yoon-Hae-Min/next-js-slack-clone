@@ -5,24 +5,23 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
 import useSocket from '@hooks/useSocket';
+import useToggle from '@hooks/useToggle';
+import { API_PATH } from 'constants/api';
+import { PAGE_PATH } from 'constants/path';
 
 const DMList: FC = () => {
   const router = useRouter();
   const { workspace } = router.query;
-  const { data: userData } = useSWR<IUser>('/api/users', fetcher, {
-    dedupingInterval: 2000, // 2초
+  const { data: userData } = useSWR<IUser>(API_PATH.USERS, fetcher, {
+    dedupingInterval: 2000,
   });
   const { data: memberData } = useSWR<IUserWithOnline[]>(
-    userData ? `/api/workspaces/${workspace}/members` : null,
+    workspace ? API_PATH.WORKSPACE.MEMBERS(workspace) : null,
     fetcher
   );
   const [socket, disconnect] = useSocket(workspace as string);
-  const [channelCollapse, setChannelCollapse] = useState(false);
+  const [channelCollapse, toggleChannelCollapse] = useToggle(false);
   const [onlineList, setOnlineList] = useState<number[]>([]);
-
-  const toggleChannelCollapse = useCallback(() => {
-    setChannelCollapse((prev) => !prev);
-  }, []);
 
   useEffect(() => {
     socket?.on('onlineList', (data: number[]) => {
@@ -33,24 +32,6 @@ const DMList: FC = () => {
     };
   }, [socket]);
 
-  //   useEffect(() => {
-  //     console.log('DMList: workspace 바꼈다', workspace);
-  //     setOnlineList([]);
-  //   }, [workspace]);
-
-  //   useEffect(() => {
-  //     socket?.on('onlineList', (data: number[]) => {
-  //       setOnlineList(data);
-  //     });
-  //     // socket?.on('dm', onMessage);
-  //     // console.log('socket on dm', socket?.hasListeners('dm'), socket);
-  //     return () => {
-  //       // socket?.off('dm', onMessage);
-  //       // console.log('socket off dm', socket?.hasListeners('dm'));
-  //       socket?.off('onlineList');
-  //     };
-  //   }, [socket]);
-
   return (
     <>
       <h2>
@@ -59,9 +40,7 @@ const DMList: FC = () => {
           onClick={toggleChannelCollapse}
         >
           <i
-            className={`${
-              channelCollapse && 'transform-none'
-            } c-icon p-channel_sidebar__section_heading_expand p-channel_sidebar__section_heading_expand--show_more_feature c-icon--caret-right c-icon--inherit c-icon--inline'`}
+            className={`${channelCollapse && 'transform-none'}`}
             data-qa="channel-section-collapse"
             aria-hidden="true"
           />
@@ -73,11 +52,7 @@ const DMList: FC = () => {
           memberData?.map((member) => {
             const isOnline = onlineList.includes(member.id);
             return (
-              <Link
-                className="flex h-7 items-center pl-9 "
-                key={member.id}
-                href={`/workspace/${workspace}/dm/${member.id}`}
-              >
+              <Link className="flex h-7 items-center pl-9 " key={member.id} href={PAGE_PATH.DM(workspace, member.id)}>
                 <i
                   className={`text-md mr-1 block h-3 w-3 rounded-full border-2 ${
                     isOnline ? ' border-none bg-green-900' : ''
