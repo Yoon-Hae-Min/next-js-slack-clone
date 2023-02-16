@@ -27,7 +27,7 @@ const DirectMessage = () => {
     fetcher
   );
   const { data: myData } = useSWR(API_PATH.USERS, fetcher);
-  const [{ data: chatData, mutate: mutateChat, setSize }, isEmpty, isReachingEnd] = useChatInfinite(
+  const [{ data: chatData, mutate: mutateChat, setSize }, isEmpty, isReachingEnd] = useChatInfinite<IDM>(
     (index: number) => workspace && userId && API_PATH.WORKSPACE.DM.PAGES(workspace, userId, index)
   );
   const { trigger } = useSWRMutation(API_PATH.WORKSPACE.DM.CHATS(workspace, userId), postRequest);
