@@ -16,11 +16,15 @@ export const API_PATH = {
       PAGES: (workspace: any, userId: any, index: number) =>
         `/api/workspaces/${workspace}/dms/${userId}/chats?perPage=20&page=${index + 1}`,
       CHATS: (workspace: any, userId: any) => `/api/workspaces/${workspace}/dms/${userId}/chats`,
+      UNREAD: (workspace: any, memberId: any, date: any) =>
+        `/api/workspaces/${workspace}/dms/${memberId}/unreads?after=${date}`,
     },
     CHANNEL: {
       ID: (workspace: any, channel: any) => `/api/workspaces/${workspace}/channels/${channel}`,
       PAGES: (workspace: any, channel: any, index: number) =>
         `/api/workspaces/${workspace}/channels/${channel}/chats?perPage=20&page=${index + 1}`,
+      UNREAD: (workspace: any, channel: any, date: any) =>
+        `/api/workspaces/${workspace}/channels/${channel}/unreads?after=${date}`,
       CHATS: (workspace: any, channel: any) => `/api/workspaces/${workspace}/channels/${channel}/chats`,
     },
   },

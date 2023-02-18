@@ -7,6 +7,7 @@ import { fetcher } from '@utils/fetcher';
 import { API_PATH } from 'constants/api';
 import useToggle from '@hooks/useToggle';
 import { PAGE_PATH } from 'constants/path';
+import EachChannel from '@components/EachChannel';
 
 const ChannelList: FC = () => {
   const router = useRouter();
@@ -39,15 +40,7 @@ const ChannelList: FC = () => {
       <div>
         {!channelCollapse &&
           channelData?.map((channel) => {
-            return (
-              <Link
-                className="flex h-7 items-center pl-9 font-bold"
-                key={channel.name}
-                href={PAGE_PATH.CHANNEL(workspace as string, channel.name)}
-              >
-                <span># {channel.name}</span>
-              </Link>
-            );
+            return <EachChannel channel={channel} key={channel.id} />;
           })}
       </div>
     </>

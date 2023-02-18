@@ -56,6 +56,7 @@ const Channel = () => {
           setChat('');
           scrollbarRef.current?.scrollToBottom();
         });
+        localStorage.setItem(`${workspace}-${channel}`, new Date().getTime().toString());
         trigger({ content: chat })
           .then(() => mutateChat())
           .catch(console.error);
@@ -137,6 +138,10 @@ const Channel = () => {
     // setDragOver(true);
   }, []);
   const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
+
+  useEffect(() => {
+    localStorage.setItem(`${workspace}-${channel}`, new Date().getTime().toString());
+  }, [workspace, channel]);
 
   if (!channelData || !myData) {
     return <Workspace />;

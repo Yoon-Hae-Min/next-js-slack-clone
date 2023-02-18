@@ -8,6 +8,7 @@ import useSocket from '@hooks/useSocket';
 import useToggle from '@hooks/useToggle';
 import { API_PATH } from 'constants/api';
 import { PAGE_PATH } from 'constants/path';
+import EachDM from '@components/EachDM';
 
 const DMList: FC = () => {
   const router = useRouter();
@@ -51,22 +52,7 @@ const DMList: FC = () => {
         {!channelCollapse &&
           memberData?.map((member) => {
             const isOnline = onlineList.includes(member.id);
-            return (
-              <Link className="flex h-7 items-center pl-9 " key={member.id} href={PAGE_PATH.DM(workspace, member.id)}>
-                <i
-                  className={`text-md mr-1 block h-3 w-3 rounded-full border-2 ${
-                    isOnline ? ' border-none bg-green-900' : ''
-                  }`}
-                  aria-hidden="true"
-                  data-qa="presence_indicator"
-                  data-qa-presence-self="false"
-                  data-qa-presence-active="false"
-                  data-qa-presence-dnd="false"
-                />
-                <span>{member.nickname}</span>
-                {member.id === userData?.id && <span> (나)</span>}
-              </Link>
-            );
+            return <EachDM member={member} key={member.id} isOnline={isOnline} />;
           })}
       </div>
     </>

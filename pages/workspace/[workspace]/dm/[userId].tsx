@@ -58,6 +58,7 @@ const DirectMessage = () => {
           setChat('');
           scrollbarRef.current?.scrollToBottom();
         });
+        localStorage.setItem(`${workspace}-${userId}`, new Date().getTime().toString());
         trigger({ content: chat })
           .then(() => mutateChat())
           .catch(console.error);
@@ -138,6 +139,10 @@ const DirectMessage = () => {
     console.log(e);
     // setDragOver(true);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(`${workspace}-${userId}`, new Date().getTime().toString());
+  }, [workspace, userId]);
 
   if (!userData || !myData) {
     return <Workspace />;
