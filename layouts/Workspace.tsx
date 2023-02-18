@@ -39,12 +39,6 @@ const Workspace = ({ children }: PropsWithChildren) => {
     }
   }, [channelData, socket, userData]);
 
-  useEffect(() => {
-    return () => {
-      disconnect();
-    };
-  }, [workspace, disconnect]);
-
   if (!userData) return null;
   return (
     <div>

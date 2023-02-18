@@ -20,19 +20,21 @@ const DMList: FC = () => {
     workspace ? API_PATH.WORKSPACE.MEMBERS(workspace) : null,
     fetcher
   );
-  const [socket, disconnect] = useSocket(workspace as string);
+  const [socket] = useSocket(workspace as string);
   const [channelCollapse, toggleChannelCollapse] = useToggle(false);
   const [onlineList, setOnlineList] = useState<number[]>([]);
-
   useEffect(() => {
+    console.log('mount', socket);
     socket?.on('onlineList', (data: number[]) => {
+      console.log('onlineList on');
       setOnlineList(data);
     });
+    console.log('socket on dm', socket?.hasListeners('onlineList'), socket);
     return () => {
+      console.log('onlineList off');
       socket?.off('onlineList');
     };
   }, [socket]);
-
   return (
     <>
       <h2>

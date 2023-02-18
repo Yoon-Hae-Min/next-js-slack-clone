@@ -32,7 +32,7 @@ const DirectMessage = () => {
   );
   const { trigger } = useSWRMutation(API_PATH.WORKSPACE.DM.CHATS(workspace, userId), postRequest);
 
-  const [socket] = useSocket();
+  const [socket] = useSocket(workspace as string);
   const [chat, onChangeChat, setChat] = useInput('');
   const [dragOver, setDragOver] = useState(false);
 
@@ -91,8 +91,10 @@ const DirectMessage = () => {
 
   useEffect(() => {
     socket?.on('dm', onMessage);
+    console.log('socket on dm', socket?.hasListeners('dm'), socket);
     return () => {
       socket?.off('dm', onMessage);
+      console.log('off');
     };
   }, [socket, onMessage]);
 
