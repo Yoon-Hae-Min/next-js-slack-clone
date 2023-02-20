@@ -150,7 +150,7 @@ const Channel = () => {
   return (
     <Workspace>
       <div className="relative flex h-[calc(100vh-38px)] flex-col flex-wrap">
-        <header className=" flex h-16 w-full items-center p-5 font-bold shadow-[0_1px_0_rgba(29,28,29,0.13)]">
+        <header className=" flex h-16 w-full items-center p-5 font-bold shadow-sm">
           <span>{channelData.name}</span>
         </header>
         <ChatList chatSections={chatSections} setSize={setSize} ref={scrollbarRef} isReachingEnd={isReachingEnd} />

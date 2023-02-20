@@ -53,25 +53,16 @@ const SignIn = () => {
             <Input type="password" id="password" name="password" value={password} onChange={setPassword} />
           </div>
           {signInError && (
-            <div className="mt-3 mb-2 font-bold text-[#e01e5a]">이메일과 비밀번호 조합이 일치하지 않습니다.</div>
+            <div className="mt-3 mb-2 font-bold text-error">이메일과 비밀번호 조합이 일치하지 않습니다.</div>
           )}
         </label>
-        <button
-          type="submit"
-          className="shadow-[0_1px_4px_rgba(0, 0, 0, 0.3)] my-3
-          h-11 w-full max-w-full cursor-pointer rounded bg-[#4a154b]
-          text-lg font-bold text-white 
-          transition-all duration-75 ease-linear
-          hover:bg-[rgba(74,21,75,0.9)]
-          focus:shadow-[0_0_0_5px_rgba(18,100,163,1),0_0_0_5px_rgba(29,155,209,0.3)]
-          "
-        >
+        <button type="submit" className="btn-primary">
           로그인
         </button>
       </form>
-      <p className=" ml-auto mr-auto mt-0 mb-2 w-[400px] text-sm text-[rgb(97,96,97)]">
+      <p className=" ml-auto mr-auto mt-0 mb-2 w-[400px] text-sm text-gray-300">
         아직 회원이 아니신가요?&nbsp;
-        <Link href={PAGE_PATH.SIGNUP} className="font-bold text-[rgb(18,100,163)]">
+        <Link href={PAGE_PATH.SIGNUP} className="font-bold text-blue-300">
           회원가입 하러가기
         </Link>
       </p>

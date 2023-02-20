@@ -8,7 +8,6 @@ import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
 import Input from '@components/Input';
-import Button from '@components/Button';
 
 interface Props {
   show: boolean;
@@ -55,7 +54,9 @@ const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal }) => {
         <Input.wrapper title="이메일">
           <Input id="member" type="email" value={newMember} onChange={onChangeNewMember} />
         </Input.wrapper>
-        <Button type="submit">초대하기</Button>
+        <button className="btn-primary" type="submit">
+          초대하기
+        </button>
       </form>
     </Modal>
   );

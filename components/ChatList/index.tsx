@@ -23,9 +23,9 @@ const ChatList = ({ chatSections, setSize, isReachingEnd }: Props, ref: Forwarde
       <Scrollbars autoHide ref={ref} onScrollFrame={onScroll}>
         {Object.entries(chatSections).map(([date, chats]) => {
           return (
-            <div className={`section-${date} mt-5 border-t border-[#eeee]`} key={date}>
+            <div className={`section-${date} mt-5 border-t border-white-100/95`} key={date}>
               <div className="width-full sticky top-3 flex flex-1 justify-center">
-                <button className="relative -top-3 z-10 h-7 rounded-3xl bg-white px-4 text-sm font-bold shadow-[0_0_0_1px_rgba(29,28,29,0.13),0_1px_3px_0_rgba(0,0,0,0.08)] outline-none">
+                <button className="relative -top-3 z-10 h-7 rounded-3xl bg-white px-4 text-sm font-bold shadow-lg outline-none">
                   {date}
                 </button>
               </div>

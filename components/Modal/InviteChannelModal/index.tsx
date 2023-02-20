@@ -8,7 +8,6 @@ import useSWR from 'swr';
 import { fetcher } from '@utils/fetcher';
 import Input from '@components/Input';
 import { useRouter } from 'next/router';
-import Button from '@components/Button';
 
 interface Props {
   show: boolean;
@@ -53,7 +52,9 @@ const InviteChannelModal: FC<Props> = ({ show, onCloseModal }) => {
         <Input.wrapper title="채널 맴버 초대">
           <Input id="member" value={newMember} onChange={onChangeNewMember} />
         </Input.wrapper>
-        <Button type="submit">초대하기</Button>
+        <button className="btn-primary" type="submit">
+          초대하기
+        </button>
       </form>
     </Modal>
   );

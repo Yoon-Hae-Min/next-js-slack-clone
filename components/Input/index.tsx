@@ -8,8 +8,8 @@ const Input: FC<InputHTMLAttributes<HTMLInputElement>> & inputOptions = ({ ...pr
   return (
     <input
       className="mb-5 box-border h-11 w-full rounded 
-        border-[1px] border-solid border-[rgba(134,134,134,1)] 
-        bg-[rgba(255,255,255)] pt-3 pb-4 text-lg leading-4 
+        border border-solid border-gray-200 
+        bg-white pt-3 pb-4 text-lg leading-4 
         focus:shadow-focusInput"
       {...props}
     />

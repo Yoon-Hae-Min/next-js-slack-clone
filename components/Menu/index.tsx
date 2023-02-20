@@ -18,7 +18,7 @@ const Menu: FC<Props> = ({ children, style, show, onCloseModal, closeButton }) =
   return (
     <div className="fixed top-0 right-0 left-0 bottom-0 z-50" onClick={onCloseModal}>
       <div
-        className=" absolute z-30 inline-block max-h-[calc(100vh-20px)] min-w-[360px] rounded-md bg-[rgba(248,248,248)] text-[rgb(29,28,29,1)] shadow-[0_0_0_1px_rgba(29,28,29,0.13),0_4px_12px_0_rgba(0,0,0,0.12)] "
+        className=" absolute z-30 inline-block max-h-[calc(100vh-20px)] min-w-[360px] rounded-md bg-white-100 text-black-200 shadow-lg "
         style={style}
         onClick={stopPropagation}
       >

@@ -1,4 +1,3 @@
-import Button from '@components/Button';
 import Input from '@components/Input';
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
@@ -17,7 +16,9 @@ const CreateChannelModal: FC<Props> = ({ show, onCloseModal }) => {
         <Input.wrapper title="채널">
           <Input id="channel" value={newChannel} onChange={onChangeNewChannel} />
         </Input.wrapper>
-        <Button type="submit">생성하기</Button>
+        <button className="btn-primary" type="submit">
+          생성하기
+        </button>
       </form>
     </Modal>
   );

@@ -84,29 +84,18 @@ const SignUp = () => {
           <div>
             <Input type="password" id="password" name="password" onChange={onChangePasswordValidation} />
           </div>
-          {missMathError && <div className="mt-3 mb-2 font-bold text-[#e01e5a]">비밀번호가 일치하지 않습니다.</div>}
-          {!nickname && <div className="mt-3 mb-2 font-bold text-[#e01e5a]">닉네임을 입력해 주세요.</div>}
-          {signUpError && <div className="mt-3 mb-2 font-bold text-[#e01e5a]">{signUpError}</div>}
-          {signUpSuccess && (
-            <div className="mt-3 mb-2 font-bold text-[#2eb67d]">회원가입되었습니다! 로그인해주세요.</div>
-          )}
+          {missMathError && <div className="mt-3 mb-2 font-bold text-error">비밀번호가 일치하지 않습니다.</div>}
+          {!nickname && <div className="mt-3 mb-2 font-bold text-error">닉네임을 입력해 주세요.</div>}
+          {signUpError && <div className="mt-3 mb-2 font-bold text-error">{signUpError}</div>}
+          {signUpSuccess && <div className="mt-3 mb-2 font-bold text-success">회원가입되었습니다! 로그인해주세요.</div>}
         </label>
-        <button
-          type="submit"
-          className="shadow-[0_1px_4px_rgba(0, 0, 0, 0.3)] my-3
-          h-11 w-full max-w-full cursor-pointer rounded bg-[#4a154b]
-          text-lg font-bold text-white 
-          transition-all duration-75 ease-linear
-          hover:bg-[rgba(74,21,75,0.9)]
-          focus:shadow-[0_0_0_5px_rgba(18,100,163,1),0_0_0_5px_rgba(29,155,209,0.3)]
-          "
-        >
+        <button type="submit" className="btn-primary">
           회원가입
         </button>
       </form>
-      <p className=" ml-auto mr-auto mt-0 mb-2 w-[400px] text-sm text-[rgb(97,96,97)]">
+      <p className=" ml-auto mr-auto mt-0 mb-2 w-[400px] text-sm text-gray-300">
         이미 계정이 있으신가요?&nbsp;
-        <Link href={PAGE_PATH.SIGNIN} className="font-bold text-[rgb(18,100,163)]">
+        <Link href={PAGE_PATH.SIGNIN} className="font-bold text-blue-300">
           로그인 하러가기
         </Link>
       </p>

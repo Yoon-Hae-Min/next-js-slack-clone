@@ -43,8 +43,8 @@ const Workspace = ({ children }: PropsWithChildren) => {
   return (
     <div>
       <header
-        className="shadow-[0_1px_0px_rgba(255, 255, 255, 0.1)] h-9
-       bg-[#4a154b] p-1 text-center text-white"
+        className="h-9 bg-primary
+       p-1 text-center text-white shadow-sm"
       >
         slack
         <div className="float-right">
@@ -59,10 +59,10 @@ const Workspace = ({ children }: PropsWithChildren) => {
         {showUserMenu && <UserDropDown show={showUserMenu} onCloseModal={closeUserMenu} />}
       </header>
       <div className="flex flex-1">
-        <div className="inline-block w-16 flex-col items-center border-t border-r border-[#502551] bg-[#3f0e40] pt-4 text-center align-top">
+        <div className="inline-block w-16 flex-col items-center border-t border-r border-primary-200 bg-primary-400 pt-4 text-center align-top">
           {userData?.Workspaces.map((ws) => (
             <Link key={ws.id} href={`/workspace/${ws.url}/channel/일반`}>
-              <button className="mb-4 inline-block h-10 w-10 cursor-pointer rounded-xl border-4  border-[#3f0e40] bg-white text-lg font-bold text-black">
+              <button className="mb-4 inline-block h-10 w-10 cursor-pointer rounded-xl border-4  border-primary-400 bg-white text-lg font-bold text-black">
                 {ws.name.slice(0, 1).toUpperCase()}
               </button>
             </Link>
@@ -74,10 +74,10 @@ const Workspace = ({ children }: PropsWithChildren) => {
             +
           </button>
         </div>
-        <nav className="inline-flex w-64 flex-col bg-[#3f0e40] align-top text-[rgb(188,171,188)]">
+        <nav className="inline-flex w-64 flex-col bg-primary-200 align-top text-[#bcabbc]">
           <div
             onClick={openWorkspaceDropDown}
-            className="inline-flex h-16 w-full cursor-pointer items-center overflow-hidden text-ellipsis whitespace-nowrap border-t border-b border-[#522653] pl-4 text-left text-2xl font-bold leading-10 text-white"
+            className="inline-flex h-16 w-full cursor-pointer items-center overflow-hidden text-ellipsis whitespace-nowrap border-t border-b border-primary-250 pl-4 text-left text-2xl font-bold leading-10 text-white"
           >
             Slack
           </div>

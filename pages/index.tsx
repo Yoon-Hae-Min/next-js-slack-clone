@@ -9,7 +9,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <span className="p-6 max-w-sm mx-auto">wwwww</span>
+      <span className="mx-auto max-w-sm p-6">wwwww</span>
     </>
   );
 }

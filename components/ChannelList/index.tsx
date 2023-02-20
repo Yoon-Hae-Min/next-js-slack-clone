@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
 import { API_PATH } from 'constants/api';
 import useToggle from '@hooks/useToggle';
-import { PAGE_PATH } from 'constants/path';
 import EachChannel from '@components/EachChannel';
 
 const ChannelList: FC = () => {
@@ -27,9 +26,7 @@ const ChannelList: FC = () => {
           onClick={toggleChannelCollapse}
         >
           <i
-            className={`${
-              channelCollapse && 'transform-none'
-            }  c-icon p-channel_sidebar__section_heading_expand p-channel_sidebar__section_heading_expand--show_more_feature c-icon--caret-right c-icon--inherit c-icon--inline`}
+            className={`${channelCollapse && 'transform-none'} `}
             data-qa="channel-section-collapse"
             aria-hidden="true"
           />

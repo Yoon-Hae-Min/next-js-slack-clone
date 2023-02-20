@@ -33,7 +33,7 @@ const UserDropDown: FC<userDropDownProps> = ({ show, onCloseModal }) => {
         </div>
       </div>
       <button
-        className="  block h-8 w-full cursor-pointer border-t border-[rgb(29,28,29)] pt-1 pr-5 pb-1 text-sm outline-none"
+        className="  block h-8 w-full cursor-pointer border-t border-black-200  pt-1 pr-5 pb-1 text-sm outline-none"
         onClick={() => handleLogOut()}
       >
         로그아웃

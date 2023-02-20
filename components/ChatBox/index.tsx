@@ -37,9 +37,7 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
     ): React.ReactNode => {
       if (!memberData) return;
       return (
-        <button
-          className={`${focus && ' bg-[#1264a3] text-white'}text-[rgb(28, 29, 28)] flex w-full items-center py-1 px-5`}
-        >
+        <button className={`${focus && ' bg-blue-300 text-white'}text-black-200 flex w-full items-center py-1 px-5`}>
           <Image
             src={`https:${gravatar.url(memberData[index].email, { s: '20px', d: 'retro' })}`}
             alt={memberData[index].nickname}
@@ -68,10 +66,7 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
 
   return (
     <div className="flex w-full p-5">
-      <form
-        className="text-[rgb(29, 28, 29)] text-md border-[rgb(29, 28, 29)] w-full rounded-sm"
-        onSubmit={onSubmitForm}
-      >
+      <form className="text-md w-full rounded-sm border-black-200 text-black-200" onSubmit={onSubmitForm}>
         <MentionsInput
           className=" text-md w-full border p-2"
           id="editor-chat"
@@ -89,7 +84,7 @@ const ChatBox: FC<Props> = ({ chat, onSubmitForm, onChangeChat, placeholder }) =
           ></Mention>
         </MentionsInput>
 
-        <div className=" relative flex h-10 items-center rounded-l-sm rounded-r-sm border-t-2 border-[rgb(221,221,221)] bg-[rgb(248,248,248)]">
+        <div className=" relative flex h-10 items-center rounded-l-sm rounded-r-sm border-t-2 border-white-150 bg-white-100">
           <button
             className="absolute right-1 top-1"
             data-qa="texty_send_button"

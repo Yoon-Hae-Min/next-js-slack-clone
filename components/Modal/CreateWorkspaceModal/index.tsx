@@ -1,4 +1,3 @@
-import Button from '@components/Button';
 import Input from '@components/Input';
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
@@ -56,7 +55,9 @@ const CreateWorkspaceModal: FC<createWorkspaceModalProps> = ({ show, onCloseModa
         <Input.wrapper title="워크스페이스 url">
           <Input value={newUrl} onChange={handleNewUrl} />
         </Input.wrapper>
-        <Button type="submit">생성하기</Button>
+        <button className="btn-primary" type="submit">
+          생성하기
+        </button>
       </form>
     </Modal>
   );

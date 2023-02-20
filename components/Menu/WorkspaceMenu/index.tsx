@@ -22,18 +22,18 @@ const WorkspaceDropDown: FC<workspaceDropDownProps> = ({
         <h2 className=" pl-5">Sleact</h2>
         <button
           onClick={openInviteWorkspaceModal}
-          className=" h-7 w-full cursor-pointer border-t border-[rgb(28,29,28)] bg-transparent p-1"
+          className=" h-7 w-full cursor-pointer border-t border-black-200 bg-transparent p-1"
         >
           워크스페이스에 사용자 초대
         </button>
         <button
-          className=" h-7 w-full cursor-pointer border-t border-[rgb(28,29,28)] bg-transparent p-1"
+          className=" h-7 w-full cursor-pointer border-t border-black-200  bg-transparent p-1"
           onClick={openCreateChannelModal}
         >
           채널 만들기
         </button>
         <button
-          className=" h-7 w-full cursor-pointer border-t border-[rgb(28,29,28)] bg-transparent p-1"
+          className=" h-7 w-full cursor-pointer border-t border-black-200  bg-transparent p-1"
           onClick={() => handleLogOut()}
         >
           로그아웃
