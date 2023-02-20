@@ -1,4 +1,4 @@
-import { IDM } from 'typings/db';
+import { IDM } from '@typings/db';
 import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
 import React from 'react';
 import { API_PATH } from 'constants/api';

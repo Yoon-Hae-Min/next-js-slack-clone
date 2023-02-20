@@ -1,4 +1,4 @@
-import { IChannel, IUser } from 'typings/db';
+import { IChannel, IUser } from '@typings/db';
 import { PAGE_PATH } from 'constants/path';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
@@ -24,6 +24,7 @@ const EachChannel = ({ channel }: { channel: IChannel }) => {
       mutate(0);
     }
   }, [mutate, router.pathname, workspace, channel]);
+
   return (
     <Link
       className="relative flex h-7 items-center pl-9 font-bold"

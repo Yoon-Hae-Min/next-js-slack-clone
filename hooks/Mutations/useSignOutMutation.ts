@@ -1,4 +1,4 @@
-import { IUser } from 'typings/db';
+import { IUser } from '@typings/db';
 import { fetcher } from '@utils/fetcher';
 import useSWR, { mutate } from 'swr';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';

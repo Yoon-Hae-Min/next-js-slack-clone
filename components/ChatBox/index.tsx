@@ -1,4 +1,4 @@
-import { IUser } from 'typings/db';
+import { IUser } from '@typings/db';
 import React, { FC, KeyboardEvent, useCallback, useEffect, useRef, VFC } from 'react';
 import useSWR from 'swr';
 import gravatar from 'gravatar';

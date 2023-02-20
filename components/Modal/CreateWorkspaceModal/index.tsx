@@ -2,7 +2,7 @@ import Button from '@components/Button';
 import Input from '@components/Input';
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
-import { IUser } from 'typings/db';
+import { IUser } from '@typings/db';
 import api from 'apis/axios';
 import { fetcher } from '@utils/fetcher';
 import React, { FC, useCallback } from 'react';

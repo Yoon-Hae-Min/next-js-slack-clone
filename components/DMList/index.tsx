@@ -1,4 +1,4 @@
-import { IUser, IUserWithOnline } from 'typings/db';
+import { IUser, IUserWithOnline } from '@typings/db';
 import { fetcher } from '@utils/fetcher';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

@@ -1,4 +1,4 @@
-import { IDM, IChat } from 'typings/db';
+import { IDM, IChat } from '@typings/db';
 import React, { FC, memo, useMemo } from 'react';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';

@@ -1,7 +1,7 @@
 import ChatBox from '@components/ChatBox';
 import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
-import { IChannel, IChat, IDM } from 'typings/db';
+import { IChannel, IChat, IDM } from '@typings/db';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';

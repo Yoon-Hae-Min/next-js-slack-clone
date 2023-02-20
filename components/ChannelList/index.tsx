@@ -1,4 +1,4 @@
-import { IChannel, IUser } from 'typings/db';
+import { IChannel, IUser } from '@typings/db';
 import Link from 'next/link';
 import React, { FC, useCallback, useState } from 'react';
 import useSWR from 'swr';

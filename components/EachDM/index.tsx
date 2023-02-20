@@ -1,4 +1,4 @@
-import { IChannel, IUser } from 'typings/db';
+import { IChannel, IUser } from '@typings/db';
 import { PAGE_PATH } from 'constants/path';
 import Link from 'next/link';
 import React, { useEffect } from 'react';

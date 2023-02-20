@@ -5,7 +5,7 @@ import gravatar from 'gravatar';
 import useSWR from 'swr';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { IChannel, IUser } from 'typings/db';
+import type { IChannel, IUser } from '@typings/db';
 import CreateChannelModal from '@components/Modal/CreateChannelModal';
 import InviteChannelModal from '@components/Modal/InviteChannelModal';
 import InviteWorkspaceModal from '@components/Modal/InviteWorkspaceModal';

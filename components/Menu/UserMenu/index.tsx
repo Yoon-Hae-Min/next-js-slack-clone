@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { FC } from 'react';
 import gravatar from 'gravatar';
 import useSWR from 'swr';
-import { IUser } from 'typings/db';
+import { IUser } from '@typings/db';
 import { fetcher } from '@utils/fetcher';
 import useSignOutMutation from '@hooks/Mutations/useSignOutMutation';
 

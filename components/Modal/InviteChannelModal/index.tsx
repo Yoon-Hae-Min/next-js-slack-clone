@@ -1,6 +1,6 @@
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
-import { IUser } from 'typings/db';
+import { IUser } from '@typings/db';
 import axios from 'axios';
 import React, { FC, useCallback } from 'react';
 import { toast } from 'react-toastify';

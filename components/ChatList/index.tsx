@@ -1,5 +1,5 @@
 import Chat from '@components/Chat';
-import { IDM, IChat } from 'typings/db';
+import { IDM, IChat } from '@typings/db';
 import React, { useCallback, forwardRef, RefObject, MutableRefObject, FC, useRef, ForwardedRef, UIEvent } from 'react';
 import { Scrollbars, positionValues } from 'react-custom-scrollbars';
 interface Props {
