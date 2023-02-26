@@ -19,7 +19,7 @@ const Modal: FC<Props> = ({ show, children, onCloseModal }) => {
         className=" relative mt-48 inline-block w-[440px] max-w-[440px] rounded-md bg-white-100 px-10 pt-8 shadow-lg"
         onClick={stopPropagation}
       >
-        <button className=" bg-transparent absolute right-2 top-1 cursor-pointer text-3xl" onClick={onCloseModal}>
+        <button className=" absolute right-2 top-1 cursor-pointer bg-transparent text-3xl" onClick={onCloseModal}>
           &times;
         </button>
         {children}
