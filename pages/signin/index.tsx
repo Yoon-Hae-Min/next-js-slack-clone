@@ -4,10 +4,11 @@ import Input from '@components/Input';
 import { useRouter } from 'next/router';
 import useInput from '@hooks/useInput';
 import useSWRMutation from 'swr/mutation';
-import { postRequest } from 'apis/axios';
+import api, { postRequest } from 'apis/axios';
 import { API_PATH } from 'constants/api';
 import { PAGE_PATH } from 'constants/path';
 import withOutAuth from '@hooks/HOC/withOutAuth';
+import { GetServerSideProps } from 'next';
 
 const SignIn = () => {
   const router = useRouter();
@@ -70,4 +71,18 @@ const SignIn = () => {
   );
 };
 
-export default withOutAuth(SignIn);
+export const getServerSideProps: GetServerSideProps = async ({ req, res, params }) => {
+  const { data } = await api.get(API_PATH.USERS, { headers: req.headers });
+
+  if (data) {
+    return {
+      redirect: {
+        destination: encodeURI('/workspace/sleact/channel/일반'),
+        permanent: false,
+      },
+    };
+  }
+  return { props: {} };
+};
+
+export default SignIn;
