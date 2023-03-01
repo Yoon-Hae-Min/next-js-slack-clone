@@ -7,17 +7,18 @@ import useSWR, { mutate } from 'swr';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
-import Workspace from '@layouts/Workspace';
 import makeSection from '@utils/makeSection';
 import Image from 'next/image';
 import useSocket from '@hooks/useSocket';
 import Scrollbars from 'react-custom-scrollbars';
 import { API_PATH } from 'constants/api';
-import withAuth from '@hooks/HOC/withAuth';
 import useChatInfinite from '@hooks/Querys/useChatInfinite';
 import api, { postRequest } from '@apis/axios';
 import useSWRMutation from 'swr/mutation';
 import { GetServerSideProps } from 'next';
+import dynamic from 'next/dynamic';
+
+const Workspace = dynamic(() => import('@layouts/Workspace'), { ssr: false });
 
 const DirectMessage = () => {
   const router = useRouter();
@@ -37,6 +38,7 @@ const DirectMessage = () => {
   const [chat, onChangeChat, setChat] = useInput('');
   const [dragOver, setDragOver] = useState(false);
 
+  debugger;
   const scrollbarRef = useRef<Scrollbars>(null);
 
   const onSubmitForm = useCallback(

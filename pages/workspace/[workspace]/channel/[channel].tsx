@@ -11,7 +11,6 @@ import makeSection from '@utils/makeSection';
 import useSocket from '@hooks/useSocket';
 import Scrollbars from 'react-custom-scrollbars';
 import { API_PATH } from 'constants/api';
-import withAuth from '@hooks/HOC/withAuth';
 import useChatInfinite from '@hooks/Querys/useChatInfinite';
 import api, { postRequest } from '@apis/axios';
 import useSWRMutation from 'swr/mutation';
@@ -168,7 +167,6 @@ const Channel = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res, params }) => {
   const { data } = await api.get(API_PATH.USERS, { headers: req.headers });
-
   if (!data) {
     return {
       redirect: {
@@ -177,6 +175,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, params 
       },
     };
   }
+
   return { props: {} };
 };
 

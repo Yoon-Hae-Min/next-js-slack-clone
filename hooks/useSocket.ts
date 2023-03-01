@@ -6,6 +6,7 @@ const backUrl = 'http://localhost:3095';
 const sockets: { [key: string]: SocketIOClient.Socket } = {};
 
 const useSocket = (workspace?: string): [SocketIOClient.Socket | undefined, () => void] => {
+  console.log(sockets);
   const disconnect = useCallback(() => {
     if (workspace && sockets[workspace]) {
       sockets[workspace].disconnect();
@@ -20,6 +21,7 @@ const useSocket = (workspace?: string): [SocketIOClient.Socket | undefined, () =
       transports: ['websocket'],
     });
   }
+
   return [sockets[workspace], disconnect];
 };
 

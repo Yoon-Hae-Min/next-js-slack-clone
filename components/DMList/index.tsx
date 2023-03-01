@@ -3,7 +3,7 @@ import { fetcher } from '@utils/fetcher';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import useSocket from '@hooks/useSocket';
 import useToggle from '@hooks/useToggle';
 import { API_PATH } from 'constants/api';
@@ -12,29 +12,31 @@ import EachDM from '@components/EachDM';
 
 const DMList: FC = () => {
   const router = useRouter();
+  const { cache, mutate } = useSWRConfig();
   const { workspace } = router.query;
+  console.log(cache.get(API_PATH.WORKSPACE.MEMBERS(workspace))); // 캐시된 데이터 확인
   const { data: userData } = useSWR<IUser>(API_PATH.USERS, fetcher, {
     dedupingInterval: 2000,
   });
   const { data: memberData } = useSWR<IUserWithOnline[]>(
     workspace ? API_PATH.WORKSPACE.MEMBERS(workspace) : null,
-    fetcher
+    fetcher,
+    { revalidateOnMount: false }
   );
+  console.log(memberData);
   const [socket] = useSocket(workspace as string);
   const [channelCollapse, toggleChannelCollapse] = useToggle(false);
   const [onlineList, setOnlineList] = useState<number[]>([]);
+
   useEffect(() => {
-    console.log('mount', socket);
     socket?.on('onlineList', (data: number[]) => {
-      console.log('onlineList on');
       setOnlineList(data);
     });
-    console.log('socket on dm', socket?.hasListeners('onlineList'), socket);
     return () => {
-      console.log('onlineList off');
       socket?.off('onlineList');
     };
   }, [socket]);
+
   return (
     <>
       <h2>

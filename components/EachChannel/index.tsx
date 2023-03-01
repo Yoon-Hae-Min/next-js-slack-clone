@@ -33,7 +33,7 @@ const EachChannel = ({ channel }: { channel: IChannel }) => {
     >
       <span># {channel.name}</span>
       {count !== undefined && count > 0 && (
-        <span className="count bg-red-500 absolute right-3 rounded-lg px-2 text-sm text-white">{count}</span>
+        <span className="count absolute right-3 rounded-lg bg-red-500 px-2 text-sm text-white">{count}</span>
       )}
     </Link>
   );

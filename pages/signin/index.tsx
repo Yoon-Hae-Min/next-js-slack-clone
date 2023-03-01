@@ -7,7 +7,6 @@ import useSWRMutation from 'swr/mutation';
 import api, { postRequest } from 'apis/axios';
 import { API_PATH } from 'constants/api';
 import { PAGE_PATH } from 'constants/path';
-import withOutAuth from '@hooks/HOC/withOutAuth';
 import { GetServerSideProps } from 'next';
 
 const SignIn = () => {
@@ -82,6 +81,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, params 
       },
     };
   }
+
   return { props: {} };
 };
 
