@@ -1,9 +1,9 @@
 import ChatBox from '@components/ChatBox';
 import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
-import { IDM } from '@typings/db';
+import { IChannel, IDM, IUserWithOnline } from '@typings/db';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import gravatar from 'gravatar';
 import { useRouter } from 'next/router';
 import { fetcher } from '@utils/fetcher';
@@ -15,8 +15,9 @@ import Scrollbars from 'react-custom-scrollbars';
 import { API_PATH } from 'constants/api';
 import withAuth from '@hooks/HOC/withAuth';
 import useChatInfinite from '@hooks/Querys/useChatInfinite';
-import { postRequest } from '@apis/axios';
+import api, { postRequest } from '@apis/axios';
 import useSWRMutation from 'swr/mutation';
+import { GetServerSideProps } from 'next';
 
 const DirectMessage = () => {
   const router = useRouter();
@@ -79,7 +80,6 @@ const DirectMessage = () => {
             scrollbarRef.current.getScrollHeight() <
             scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 150
           ) {
-            console.log('scrollToBottom!', scrollbarRef.current?.getValues());
             setTimeout(() => {
               scrollbarRef.current?.scrollToBottom();
             }, 50);
@@ -91,10 +91,8 @@ const DirectMessage = () => {
 
   useEffect(() => {
     socket?.on('dm', onMessage);
-    console.log('socket on dm', socket?.hasListeners('dm'), socket);
     return () => {
       socket?.off('dm', onMessage);
-      console.log('off');
     };
   }, [socket, onMessage]);
 
@@ -177,4 +175,18 @@ const DirectMessage = () => {
   );
 };
 
-export default withAuth(DirectMessage);
+export const getServerSideProps: GetServerSideProps = async ({ req, res, params }) => {
+  const { data } = await api.get(API_PATH.USERS, { headers: req.headers });
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false,
+      },
+    };
+  }
+  return { props: {} };
+};
+
+export default DirectMessage;
